@@ -3,14 +3,46 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>(nom du site)</title>
+    <title>Fix_mycity</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../static/app.js" defer></script>
     <link rel="stylesheet" href="../static/style.css">
 </head>
 
 <body>
-    <h1 id="test" onclick="easteregg()">Hello world!</h1>
+    <div class="haut">
+        <div class="home">
+            <a href="index.html">Accueil</a>
+        </div>
+        <form action="#">
+            <input type="text" name="barre de Recherche" placeholder="Rechercher">
+            <button type="submit">chercher</button>
+        </form>
+        <div >
+            <a href="login.html">Se connecter</a>
+        </div>
+    </div>
+    <div class="milieu">
+        <button class="add">
+            <a href="report.html">Signaler</a>
+        </button>
+        <table class="signalements">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Adresse</th>
+                    <th>Rapporté par</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <td>nid de poule</td>
+                <td>place de l'université 1</td>
+                <td>user87</td>
+                <td>30/09/2025</td>
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>

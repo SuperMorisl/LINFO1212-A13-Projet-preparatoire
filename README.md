@@ -6,7 +6,7 @@
 - **S. Sofia**
 
 ## 🎯 Objectif du projet
-L'objectif de ce projet est de créer une **application web** dans le style de **FixMyStreet**.  
+L'objectif de ce projet est de créer une **application web** dans le style de **(https://fixmystreet.brussels)**.  
 Celle-ci permettra à des citoyens de la commune d'**Ottignies-Louvain-la-Neuve** de **reporter des incidents** ayant eu lieu dans l'espace public.
 
 ## 🗂️ Organisation du projet

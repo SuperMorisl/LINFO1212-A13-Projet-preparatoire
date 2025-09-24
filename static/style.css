@@ -1,3 +1,29 @@
-h1 {
-    color: blue;
+body{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: azure;
+    font-size: large;   
+}
+.haut{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    font-weight: bold;
+}
+.add{
+    display: block;
+    margin-left: 5px;
+    padding: 1rem 2rem;
+    border: none;
+}
+
+
+.signalements{
+    margin: 2rem auto;
+    border-spacing: 5rem 0.5rem;
+    
+}
+
+.signalements th, .signalements td{
+    padding: 1rem 1rem;
+    border: 1px solid black;
 }
