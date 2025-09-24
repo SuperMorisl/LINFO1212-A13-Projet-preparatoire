@@ -14,6 +14,7 @@ Celle-ci permettra à des citoyens de la commune d'**Ottignies-Louvain-la-Neuve*
 #### 📁 Static
 - Fichiers "photos" (**.png, .jpg**,...)
 - Fichier **.css**
+- Fichier **.js**
   
 #### 📁 Templates
 - Fichiers **.html**
