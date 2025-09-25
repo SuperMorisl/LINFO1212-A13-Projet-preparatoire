@@ -1,9 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap'); /* Google font pour importer des fonts */
+/* Font(s) actuelle(s) : Open sans */
+
+html, body {
+    margin: 0;
+}
+
 body{
     font-family: Georgia, 'Times New Roman', Times, serif;
-    background-color: azure;
     font-size: large;   
 }
 .haut{
+    background-color: rgb(226, 189, 111); /* On peut changer la couleur, je l'ai juste mis pour séparer le nav du reste du site */
     display: flex;
     justify-content: space-between;
     padding: 1rem 2rem;
@@ -26,4 +33,106 @@ body{
 .signalements th, .signalements td{
     padding: 1rem 1rem;
     border: 1px solid black;
+}
+
+h1.title {
+    position: relative; /* Obligatoire pour avoir un élément ::before ou ::after */
+    margin-left: 2%;
+    font-size: clamp(1.7rem, 5vw, 2.7rem); /* clamp(taille_min, taille préférée, taille_max) */
+    width: fit-content;
+    color: rgb(43, 37, 22);
+
+    font-family: 'Open sans', sans-serif;
+}
+
+h1.title::before { /* Effet souligné */
+    content: ''; /* Obligatoire pour un element ::before ou ::after */
+    position: absolute; /* Permet à l'élément d'être à une position fixe (x,y) */
+    bottom: -0.5rem; 
+    left: 0;
+    width: 100%;
+    height: 0.2rem;
+    background-color: rgba(226, 190, 111, 0.547);
+}
+
+div.formulaire {
+    margin: 2%;
+}
+
+div.formulaire h2 {
+    font-size: clamp(1.2rem, 3vw, 1.8rem); /* clamp(taille_min, taille préférée, taille_max) */
+    width: fit-content;
+
+
+    font-family: 'Open sans', sans-serif;
+    color: rgba(43, 37, 22, 0.851);
+}
+
+div.formulaire textarea {
+    resize: none; /* empêche l’utilisateur d'étirer le textarea */
+    padding: 10px;
+    width: 70%;
+
+    border: 2px solid rgba(43, 37, 22, 0.851);
+    border-radius: 10px;
+
+    font-family: 'Open sans', sans-serif;
+    font-size: clamp(0.875rem, 2vw, 1rem); /* clamp(taille_min, taille préférée, taille_max) */
+    color: rgb(43, 37, 22);
+}
+
+div.formulaire textarea:focus { /* s'active quand on remplie le formulaire */
+    outline: none; /* supprime le contour bleu de base */
+    border: 3px solid rgba(226, 190, 111, 0.547); 
+}
+
+div.formulaire button {
+    display: flex; /* necessaire pour centrer verticalement et horizontalement */
+    justify-content: center; /* centre horizontalement */
+    align-items: center;     /* centre verticalement */
+    
+    margin-top: 2%;
+    padding: 0.5rem 1rem;    /* padding top/bottom  left/right */
+    width: fit-content;
+
+    border: 3px solid rgba(226, 190, 111, 0.547);
+    border-radius: 15px;
+    background-color: rgb(255, 255, 255);
+
+    font-family: 'Open Sans', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: rgb(43, 37, 22);
+
+    cursor: pointer; /* tranformer le curseur quand on passe dessus */
+}
+
+div.formulaire button:hover { /* Comportement quand on est sur le button */
+    color: rgb(226, 189, 111);
+}
+
+
+/* Pour changer certains attributs pour que ça soit responsive sur mobile */
+@media (max-width: 500px) { 
+    h1.title {
+        margin: auto;
+        margin-top: 1rem;
+        font-size: 1.5rem;
+    }
+
+    h1.title::before {
+        height: 0.15rem;
+    }
+
+    div.formulaire {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    div.formulaire textarea {
+        width: 80%;
+    }
+
+    div.formulaire h2 {
+        font-size: 1rem;
+    }
 }
