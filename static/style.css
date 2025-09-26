@@ -45,6 +45,8 @@ h1.title {
     font-family: 'Open sans', sans-serif;
 }
 
+
+
 h1.title::before { /* Effet souligné */
     content: ''; /* Obligatoire pour un element ::before ou ::after */
     position: absolute; /* Permet à l'élément d'être à une position fixe (x,y) */
@@ -54,6 +56,8 @@ h1.title::before { /* Effet souligné */
     height: 0.2rem;
     background-color: rgba(226, 190, 111, 0.547);
 }
+
+
 
 div.formulaire {
     margin: 2%;
@@ -108,6 +112,16 @@ div.formulaire button {
 
 div.formulaire button:hover { /* Comportement quand on est sur le button */
     color: rgb(226, 189, 111);
+}
+
+
+div.login_body {
+    width : 500px;
+    margin: 0 auto;
+    padding: 10px;
+    font-size: clamp(0.875rem, 2vw, 1rem);
+
+
 }
 
 
