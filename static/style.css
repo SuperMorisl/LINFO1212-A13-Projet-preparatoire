@@ -115,13 +115,16 @@ div.formulaire button:hover { /* Comportement quand on est sur le button */
 }
 
 
-div.login_body {
-    width : 500px;
-    margin: 0 auto;
-    padding: 10px;
-    font-size: clamp(0.875rem, 2vw, 1rem);
-
-
+div.login_page {
+    width : 420px; 
+    margin: 0 auto; 
+    padding: 0.5rem 1rem; 
+    margin-top: 11%;
+    border: 3px solid rgba(226, 190, 111, 0.547); 
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 
