@@ -6,11 +6,11 @@ html, body {
 }
 
 body{
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: 'Open sans', sans-serif;
     font-size: large;   
 }
 .haut{
-    background-color: rgb(226, 189, 111); /* On peut changer la couleur, je l'ai juste mis pour séparer le nav du reste du site */
+    background-color: #D8BFAA ; /* On peut changer la couleur, je l'ai juste mis pour séparer le nav du reste du site */
     display: flex;
     justify-content: space-between;
     padding: 1rem 2rem;
@@ -41,8 +41,6 @@ h1.title {
     font-size: clamp(1.7rem, 5vw, 2.7rem); /* clamp(taille_min, taille préférée, taille_max) */
     width: fit-content;
     color: rgb(43, 37, 22);
-
-    font-family: 'Open sans', sans-serif;
 }
 
 
@@ -54,7 +52,7 @@ h1.title::before { /* Effet souligné */
     left: 0;
     width: 100%;
     height: 0.2rem;
-    background-color: rgba(226, 190, 111, 0.547);
+    background-color: #A67C52;
 }
 
 
@@ -66,9 +64,6 @@ div.formulaire {
 div.formulaire h2 {
     font-size: clamp(1.2rem, 3vw, 1.8rem); /* clamp(taille_min, taille préférée, taille_max) */
     width: fit-content;
-
-
-    font-family: 'Open sans', sans-serif;
     color: rgba(43, 37, 22, 0.851);
 }
 
@@ -77,7 +72,7 @@ div.formulaire textarea {
     padding: 10px;
     width: 70%;
 
-    border: 2px solid rgba(43, 37, 22, 0.851);
+    border: 2px solid #A67C52;
     border-radius: 10px;
 
     font-family: 'Open sans', sans-serif;
@@ -87,7 +82,7 @@ div.formulaire textarea {
 
 div.formulaire textarea:focus { /* s'active quand on remplie le formulaire */
     outline: none; /* supprime le contour bleu de base */
-    border: 3px solid rgba(226, 190, 111, 0.547); 
+    border: 3px solid #D8BFAA; 
 }
 
 div.formulaire button {
@@ -99,19 +94,20 @@ div.formulaire button {
     padding: 0.5rem 1rem;    /* padding top/bottom  left/right */
     width: fit-content;
 
-    border: 3px solid rgba(226, 190, 111, 0.547);
+    border: 3px solid rgba(166, 124, 82, 0.55);
     border-radius: 15px;
-    background-color: rgb(255, 255, 255);
 
-    font-family: 'Open Sans', sans-serif;
+    background-color: #ab9076;
+
     font-size: clamp(1rem, 2vw, 1.2rem);
-    color: rgb(43, 37, 22);
+    color: rgb(255, 255, 255);
 
-    cursor: pointer; /* tranformer le curseur quand on passe dessus */
+    cursor: pointer;
+    transition: background-color 0.4s ease; /* transition pour hover */
 }
 
 div.formulaire button:hover { /* Comportement quand on est sur le button */
-    color: rgb(226, 189, 111);
+    background-color: #8C6239;
 }
 
 
@@ -120,7 +116,7 @@ div.login_page {
     margin: 0 auto; 
     padding: 0.5rem 1rem; 
     margin-top: 11%;
-    border: 3px solid rgba(226, 190, 111, 0.547); 
+    border: 3px solid #A67C52; 
     border-radius: 15px;
     justify-content: center;
     align-items: center;
