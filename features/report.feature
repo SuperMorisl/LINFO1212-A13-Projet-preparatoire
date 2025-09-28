@@ -1,7 +1,9 @@
 #language : fr
 
+Fonctionnalité: Reporter un incident
+
 Les citoyens inscrit peuvent reporter un incident dés qu'il y en a un
-sur la voie publique à Louvain-La-Neuve
+sur la voie publique à Louvain-La-Neuve.
 
 Scénario : Un incident est repére par un citoyens
 
