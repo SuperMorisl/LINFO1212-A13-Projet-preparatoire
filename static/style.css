@@ -112,12 +112,12 @@ div.formulaire button:hover { /* Comportement quand on est sur le button */
 
 
 div.login_page {
-    width : 420px; 
+    width : 26%; 
     margin: 0 auto; 
     padding: 0.5rem 1rem; 
-    margin-top: 11%;
-    border: 3px solid #A67C52; 
-    border-radius: 15px;
+    margin-top: 7%;
+    border: 4px solid #A67C52; 
+    border-radius: 4%;
     justify-content: center;
     align-items: center;
     
@@ -148,4 +148,12 @@ div.login_page {
     div.formulaire h2 {
         font-size: 1rem;
     }
+
+    div.login_page {
+        width : 80%; 
+        margin-top: 20%;
+        font-size: 0.9rem;
+        box-sizing: border-box; /* Pour que le padding ne déborde pas du div */
+    }
+
 }
