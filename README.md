@@ -24,6 +24,7 @@ Celle-ci permettra à des citoyens de la commune d'**Ottignies-Louvain-la-Neuve*
   
 #### 🌱 Racine
 - 📄 **README**
+- **.gitignore**
 
 ## 🛠️ Stack
 ### 🎨 - Front-end
