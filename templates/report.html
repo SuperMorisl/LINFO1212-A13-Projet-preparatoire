@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>FixMyCity | Signaler un incident</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../static/logo.jpg">
+    <script src="../static/app.js" defer></script>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+    <nav>
+        <div class="left">
+            <img src="../static/logo.jpg">
+            <a href="index.html">FixMyCity</a>
+        </div>
+    
+        <div class="right">
+            <div class="search">
+                <form action="#">
+                    <input type="text" name="barre de Recherche" placeholder="Adresse">
+                    <button type="submit"></button>
+                </form>
+            </div>
+            <a href="login.html">Se connecter</a>
+        </div>
+    </nav>
+    
+
+    <h1 class="title">Signaler un nouvel incident</h1>
+
+    <form method="post">
+        <div class="formulaire">
+        <h2>Description</h2>
+        <textarea name="description" rows="15" required></textarea>
+
+        <h2>Adresse</h2>
+        <textarea name="adresse" rows="7" required></textarea>
+
+        <br>
+        <button type="submit">Soumettre</button>
+        </div>
+    </form>
+</body>
+
+</html>
