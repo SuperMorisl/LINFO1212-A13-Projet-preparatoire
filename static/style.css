@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap'); /* Google font pour importer des fonts */
-/* Font(s) actuelle(s) : Open sans */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;700&family=Open+Sans:wght@400;600;700&display=swap'); /* Google font pour importer des fonts */
+/* Font(s) actuelle(s) : Open sans, Exo 2 */
 
 html, body {
     margin: 0;
@@ -9,13 +9,101 @@ body{
     font-family: 'Open sans', sans-serif;
     font-size: large;   
 }
-.haut{
-    background-color: #D8BFAA ; /* On peut changer la couleur, je l'ai juste mis pour séparer le nav du reste du site */
+
+nav {
     display: flex;
+    width: 100wv;
+    height: 1.5rem;
     justify-content: space-between;
-    padding: 1rem 2rem;
-    font-weight: bold;
+    align-items: center;
+    background-color: #D8BFAA ; /* On peut changer la couleur, je l'ai juste mis pour séparer le nav du reste du site */
+    padding: 1.2rem 2%;
 }
+
+nav .left,
+nav .right {
+    display: flex;
+    align-items: center;
+}
+
+nav .left img {
+    display: block;
+    width: clamp(2.7rem, 10vw, 3.7rem); /* clamp(taille_min, taille préférée, taille_max) */
+}
+
+nav .left a {
+    font-family: 'Exo 2', sans-serif;
+    font-size: clamp(1.4rem, 4.6vw, 2.4rem); /* clamp(taille_min, taille préférée, taille_max) */
+
+    color: rgb(43, 37, 22);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+nav .right {
+    gap: 2rem;
+}
+
+nav .right a {
+    font-size: clamp(0.8rem, 3.2vw, 1.2rem); /* clamp(taille_min, taille préférée, taille_max) */
+    color: rgba(43, 37, 22, 0.851);
+    font-weight: 600;
+    text-decoration: none;
+    text-wrap: nowrap;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.search {
+    width: fit-content;
+    background-color:#ab9076;
+    border-radius: 15px;
+}
+
+.search form {
+  display: flex;
+  align-items: center;
+}
+
+.search input {
+    display: block;   
+    height: clamp(1rem, 7vw, 2.5rem); /* clamp(taille_min, taille préférée, taille_max) */
+    width: clamp(9rem, 17vw, 18rem); /* clamp(taille_min, taille préférée, taille_max) */;
+    border-radius: 15px;
+    border: none;
+    padding: 0 0.5rem;
+    box-sizing: border-box; 
+
+    font-family: 'Open sans', sans-serif;
+    font-size: clamp(0.7rem, 2vw, 0.9rem); /* clamp(taille_min, taille préférée, taille_max) */
+    color: rgb(43, 37, 22);
+}
+
+.search input:focus { /* s'active quand on remplie le formulaire */
+    outline: none; /* supprime le contour bleu de base */
+}
+
+.search button {
+    background-color: #ab9076;
+    background-image: url("../static/search_icon.png");
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    width: clamp(1rem, 7vw, 2.5rem); /* clamp(taille_min, taille préférée, taille_max) */;
+    height: clamp(1rem, 7vw, 2.5rem); /* clamp(taille_min, taille préférée, taille_max) */;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
+
+.search:hover {
+    box-shadow: 2px 0 6px #ffffff5f;
+}
+
+
 .add{
     display: block;
     margin-left: 5px;
@@ -41,6 +129,7 @@ h1.title {
     font-size: clamp(1.7rem, 5vw, 2.7rem); /* clamp(taille_min, taille préférée, taille_max) */
     width: fit-content;
     color: rgb(43, 37, 22);
+    text-wrap: nowrap; /* Le texte sera toujours sur une seule ligne */
 }
 
 
@@ -112,7 +201,7 @@ div.formulaire button:hover { /* Comportement quand on est sur le button */
 
 
 div.login_page {
-    width : 26%; 
+    width : fit-content; 
     margin: 0 auto; 
     padding: 0.5rem 1rem; 
     margin-top: 7%;
@@ -126,6 +215,22 @@ div.login_page {
 
 /* Pour changer certains attributs pour que ça soit responsive sur mobile */
 @media (max-width: 500px) { 
+    nav .left a {
+        font-size: 1.2rem;
+    }
+
+    nav .right {
+        gap: 0.5rem;
+    }
+
+    nav .right a {
+        font-size: 0.8rem;
+    }
+
+    .search input {
+        width: 7rem;
+    }
+
     h1.title {
         margin: auto;
         margin-top: 1rem;
