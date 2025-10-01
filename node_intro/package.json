@@ -2,11 +2,12 @@
   "name": "player",
   "version": "1.0.0",
   "description": "Louvain Propre",
-  
-  "scripts": {
-    
-  },
+  "scripts": {},
   "author": "Groupe 13",
   "license": "Apache 2.0",
-  "private" : true
+  "private": true,
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0"
+  }
 }
