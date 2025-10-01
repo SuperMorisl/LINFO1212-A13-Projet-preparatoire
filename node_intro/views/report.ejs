@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Fix_mycity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="haut">
+        <div class="home">
+            <a href="/">Accueil</a>
+        </div>
+        <form action="#">
+            <input type="text" name="barre de Recherche" placeholder="Rechercher">
+            <button type="submit">chercher</button>
+        </form>
+        <div >
+            <a href="/login">Se connecter</a>
+        </div>
+    </div>
+    
+    <h1 class="title">Signaler un nouvel incident</h1>
+
+    <form method="post">
+        <div class="formulaire">
+        <h2>Description</h2>
+        <textarea name="description" rows="15" required></textarea>
+
+        <h2>Adresse</h2>
+        <textarea name="adresse" rows="7" required></textarea>
+
+        <br>
+        <button type="submit">Soumettre</button>
+        </div>
+    </form>
+</body>
+
+</html>
