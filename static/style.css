@@ -87,7 +87,7 @@ nav a:hover {
 
 .search button {
     background-color: #ab9076;
-    background-image: url("../static/search_icon.png");
+    background-image: url("/search_icon.png");
     background-size: 60%;
     background-repeat: no-repeat;
     background-position: center;
