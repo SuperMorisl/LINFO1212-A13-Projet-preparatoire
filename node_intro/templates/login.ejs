@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8" />
@@ -18,7 +18,7 @@
     
         <div class="right">
             <div class="search">
-                <form action="#">
+                <form action="#" >
                     <input type="text" name="barre de Recherche" placeholder="Adresse">
                     <button type="submit"></button>
                 </form>
@@ -27,16 +27,21 @@
         </div>
     </nav>
     <div class="login_page">
+        <% if (error) { %>
+            <p style="color:red;"><%= error %></p>
+        <% } %>
+
         <h1 class="title">Compte existant</h1>
-        <form action="##" method="post">
+
+        <form action="/login" method="post">
         <div class="formulaire">
             <p>
                 <label>Nom d'utilisateur : </label>
-                <input type="text" id="utilisateur_connection" name="utilisateur" placeholder="Entrez votre nom d'utilisateur" required>
+                <input type="text" id="utilisateur_connection" name="username" placeholder="Entrez votre nom d'utilisateur" required>
             </p>
             <p>
                 <label>Mot de passe : </label>
-                <input type="password" id="mdp_connection" name="mot_de_passe_actuel" required>
+                <input type="password" id="mdp_connection" name="password" required>
             </p>
             <p>
                 <button type="submit">S'identifier</button>

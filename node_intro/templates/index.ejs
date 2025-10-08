@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8" />
@@ -24,7 +24,11 @@
                     <button type="submit"></button>
                 </form>
             </div>
-            <a href="/login">Se connecter</a>
+            <% if (username) { %>
+                <p> <%= username %> !</p>
+            
+            <% }else {%>
+            <a href="/login">Se connecter</a><%} %>
         </div>
     </nav>
     <div class="milieu">
