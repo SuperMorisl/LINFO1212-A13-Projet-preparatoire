@@ -1,44 +1,47 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8" />
-    <title>FixMyCity | Se connecter</title>
+    <title>Fix_mycity</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../static/logo.jpg">
-    <script src="../static/app.js" defer></script>
-    <link rel="stylesheet" href="../static/style.css">
+    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
     <nav>
         <div class="left">
-            <img src="../static/logo.jpg">
-            <a href="index.html">FixMyCity</a>
+            <img src="/logo.jpg">
+            <a href="/">FixMyCity</a>
         </div>
     
         <div class="right">
             <div class="search">
-                <form action="#">
+                <form action="#" >
                     <input type="text" name="barre de Recherche" placeholder="Adresse">
                     <button type="submit"></button>
                 </form>
             </div>
-            <a href="login.html">Se connecter</a>
+            <a href="/login">Se connecter</a>
         </div>
     </nav>
-
     <div class="login_page">
+        <% if (error) { %>
+            <p style="color:red;"><%= error %></p>
+        <% } %>
+
         <h1 class="title">Compte existant</h1>
-        <form action="##" method="post">
+
+        <form action="/login" method="post">
         <div class="formulaire">
             <p>
                 <label>Nom d'utilisateur : </label>
-                <input type="text" id="utilisateur_connection" name="utilisateur" placeholder="Entrez votre nom d'utilisateur" required>
+                <input type="text" id="utilisateur_connection" name="username" placeholder="Entrez votre nom d'utilisateur" required>
             </p>
             <p>
                 <label>Mot de passe : </label>
-                <input type="password" id="mdp_connection" name="mot_de_passe_actuel" required>
+                <input type="password" id="mdp_connection" name="password" required>
             </p>
             <p>
                 <button type="submit">S'identifier</button>

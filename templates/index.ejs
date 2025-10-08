@@ -1,20 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8" />
-    <title>FixMyCity</title>
+    <title>Fix_mycity</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../static/logo.jpg">
-    <script src="../static/app.js" defer></script>
-    <link rel="stylesheet" href="../static/style.css">
+    <script src="/app.js" defer></script>
+    <link rel="icon" href="/logo.jpg">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
     <nav>
         <div class="left">
-            <img src="../static/logo.jpg">
-            <a href="index.html">FixMyCity</a>
+            <img src="/logo.jpg">
+            <a href="/">FixMyCity</a>
         </div>
     
         <div class="right">
@@ -24,13 +24,16 @@
                     <button type="submit"></button>
                 </form>
             </div>
-            <a href="login.html">Se connecter</a>
+            <% if (username) { %>
+                <p> <%= username %> !</p>
+            
+            <% }else {%>
+            <a href="/login">Se connecter</a><%} %>
         </div>
     </nav>
-
     <div class="milieu">
         <button class="add">
-            <a href="report.html">Signaler</a>
+            <a href="/report">Signaler</a>
         </button>
         <table class="signalements">
             <thead>
