@@ -146,7 +146,6 @@ h1.title::before { /* Effet souligné */
 }
 
 
-
 div.formulaire {
     margin: 2%;
 }
@@ -202,7 +201,7 @@ div.formulaire button:hover { /* Comportement quand on est sur le button */
 
 div.login_page {
     width: 56%; 
-    max-width: 400px; /* évite qu’elle devienne trop grande sur les grands écrans */
+    max-width: 400px; /* évite que le cadre devienne trop grand sur les grands écrans */
     margin: 5% auto 4%; /* haut, gauche/droite, bas */
     padding: 2rem; /* espace intérieur plus confortable */
     border: 3.5px solid #A67C52;
@@ -211,7 +210,7 @@ div.login_page {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 1.1rem; /* texte plus lisible */
+    font-size: 1.1rem; /* pour rendre le texte plus lisible */
 }
 
 
@@ -230,40 +229,36 @@ p.date {
     margin-right: 3%;
 }
 
-p.date span {
+p.date span { /* pour entourer que la partie de la date */
     border: 3px solid #D8BFAA; 
     border-radius: 7px;
     padding: 0.1em 0.3em; 
     display: inline-block;
 }
 
-
+/* le tableau avec les signalements */
 table.signalements{
     text-size-adjust: 100%;
     margin-top: 4%;
     border: 2px solid rgba(166, 124, 82, 0.55); 
-    border-collapse: collapse; 
+    border-collapse: collapse; /* pour que la bordure du tableau html se fonde à celle qu'on créé avec border */
     width: 80%;
-
 }
 
 table.signalements th, table.signalements td {
     border: 2px solid rgba(166, 124, 82, 0.55); 
     padding: 8px;
     text-align: center;
-
 }
 
 table.signalements th{
     background-color: #D8BFAA;
 }
 
-table.signalements td:hover{
+table.signalements td:hover{ /* hover sert à faire en sorte que lorsqu'on clique sur une case du tableau celle-ci change de couleur */
     background-color: #cdc0b7;
+    transition: 0.5s; /* le temps qu'il faut pour le changement de couleur */
 }
-
-
-
 
 
 
@@ -310,10 +305,30 @@ table.signalements td:hover{
 
     div.login_page {
         width : 80%; 
-        margin-top: 3%;
-        margin-bottom: 5%;
+        max-width: 600px;   /* empêche la boîte de devenir trop large */
+        min-width: 250px; 
+        margin-top: 4%;
+        margin-bottom: 4%;
+        padding: 1rem;
         font-size: 0.9rem;
-        box-sizing: border-box; /* Pour que le padding ne déborde pas du div */
+        box-sizing: border-box;   /* sert pour la largeur ppour pas qu'elle soit trop grande */    
     }
 
+
+    table.signalements {
+        width: 100%;            
+        min-width: 300px;
+        margin: 0 auto;
+        table-layout: auto;      /* les colonnes s’adaptent au contenu */
+        border-collapse: collapse;
+    }
+
+
+    table.signalements th, table.signalements td {
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;        /* rendre le texte lisible sur petit écran */
+        white-space: normal;
+        overflow-wrap: break-word; /* coupe les mots s'ils sont trop long pour la ligne */
+        word-break: break-word;   
+    }
 }
