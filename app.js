@@ -20,8 +20,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // Permet de recupérer les 
 // Route de la page d'accueil
 app.get('/', function (req, res, next) {
   res.render('index', {
-    today: new Date(),
-    username: req.session.username // a remplir avec description et adresse...
+    today: new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+    username: req.session.username,
+    description: req.session.description,
+    adresse: req.session.adresse
+
   });
 });
 

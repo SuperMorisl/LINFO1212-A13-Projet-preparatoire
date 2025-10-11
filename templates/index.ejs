@@ -38,6 +38,7 @@
         <button class="add">
             <a href="/report">Signaler</a>
         </button>
+        <p class="date">Jour actuel : <span> <%= today %></span></p>
         <table class="signalements">
             <thead>
                 <tr>
@@ -47,12 +48,15 @@
                     <th>Date</th>
                 </tr>
             </thead>
-            <tbody>
-                <td>nid de poule</td>
-                <td>place de l'université 1</td>
-                <td>user87</td>
-                <td>30/09/2025</td>
-            </tbody>
+            <% if (description && adresse) { %>
+                <tbody>
+                    <td><%= description %></td>
+                    <td><%= adresse %></td>
+                    <td><%= username %></td>
+                    <td><%= today %></td>
+                </tbody>
+            <% } %>
+
         </table>
     </div>
 </body>

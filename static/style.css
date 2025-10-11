@@ -179,7 +179,6 @@ div.formulaire button {
     display: flex; /* necessaire pour centrer verticalement et horizontalement */
     justify-content: center; /* centre horizontalement */
     align-items: center;     /* centre verticalement */
-    
     margin-top: 2%;
     padding: 0.5rem 1rem;    /* padding top/bottom  left/right */
     width: fit-content;
@@ -202,21 +201,70 @@ div.formulaire button:hover { /* Comportement quand on est sur le button */
 
 
 div.login_page {
-    width : fit-content; 
-    margin: 0 auto; 
-    padding: 0.5rem 1rem; 
-    margin-top: 7%;
-    border: 4px solid #A67C52; 
+    width: 56%; 
+    max-width: 400px; /* évite qu’elle devienne trop grande sur les grands écrans */
+    margin: 5% auto 4%; /* haut, gauche/droite, bas */
+    padding: 2rem; /* espace intérieur plus confortable */
+    border: 3.5px solid #A67C52;
     border-radius: 15px;
+    display: flex; 
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 1.1rem; /* texte plus lisible */
 }
+
 
 p.error {
     color: red;
-    text-align: center;
     font-weight: bold;
+    font-size: clamp(0.5rem, 0.8vw, 1.4rem);
+    font-style: italic;
+    text-align: center;
 }
+
+p.date {
+    text-align: right;
+    font-size: clamp(0.8rem, 3.2vw, 1.2rem);
+    margin-top: 0.2%;
+    margin-right: 3%;
+}
+
+p.date span {
+    border: 3px solid #D8BFAA; 
+    border-radius: 7px;
+    padding: 0.1em 0.3em; 
+    display: inline-block;
+}
+
+
+table.signalements{
+    text-size-adjust: 100%;
+    margin-top: 4%;
+    border: 2px solid rgba(166, 124, 82, 0.55); 
+    border-collapse: collapse; 
+    width: 80%;
+
+}
+
+table.signalements th, table.signalements td {
+    border: 2px solid rgba(166, 124, 82, 0.55); 
+    padding: 8px;
+    text-align: center;
+
+}
+
+table.signalements th{
+    background-color: #D8BFAA;
+}
+
+table.signalements td:hover{
+    background-color: #cdc0b7;
+}
+
+
+
+
 
 
 /* Pour changer certains attributs pour que ça soit responsive sur mobile */
@@ -262,7 +310,8 @@ p.error {
 
     div.login_page {
         width : 80%; 
-        margin-top: 20%;
+        margin-top: 3%;
+        margin-bottom: 5%;
         font-size: 0.9rem;
         box-sizing: border-box; /* Pour que le padding ne déborde pas du div */
     }

@@ -22,10 +22,6 @@
 
         <h1 class="title">Compte existant</h1>
 
-        <% if (error) { %>
-            <p class="error"><%= error %></p>
-        <% } %>
-
         <form action="/login" method="post">
         <div class="formulaire">
             <p>
@@ -36,6 +32,11 @@
                 <label>Mot de passe : </label>
                 <input type="password" id="mdp_connection" name="password" required>
             </p>
+
+            <% if (error) { %>
+            <p class="error"><%= error %></p>
+            <% } %> 
+
             <p>
                 <button type="submit">S'identifier</button>
             </p>
