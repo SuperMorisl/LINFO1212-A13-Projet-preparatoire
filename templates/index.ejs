@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Fix_mycity</title>
+    <title>FixMyCity</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/app.js" defer></script>
     <link rel="icon" href="/logo.jpg">
@@ -24,11 +24,14 @@
                     <button type="submit"></button>
                 </form>
             </div>
+
             <% if (username) { %>
-                <p> <%= username %> !</p>
+                <p><%= username %></p>
             
-            <% }else {%>
-            <a href="/login">Se connecter</a><%} %>
+            <% } else { %>
+            <a href="/login">Se connecter</a>
+            <% } %>
+            
         </div>
     </nav>
     <div class="milieu">

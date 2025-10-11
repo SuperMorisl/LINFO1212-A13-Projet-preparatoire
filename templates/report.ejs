@@ -3,9 +3,10 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Fix_mycity</title>
+    <title>FixMyCity | Signaler un incident</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="app.js" defer></script>
+    <link rel="icon" href="/logo.jpg">
     <link rel="stylesheet" href="/style.css">
 </head>
 
@@ -17,13 +18,14 @@
         </div>
     
         <div class="right">
-            <div class="search">
-                <form action="#">
-                    <input type="text" name="barre de Recherche" placeholder="Adresse">
-                    <button type="submit"></button>
-                </form>
-            </div>
+
+            <% if (username) { %>
+                <p><%= username %></p>
+            
+            <% } else { %>
             <a href="/login">Se connecter</a>
+            <% } %>
+
         </div>
     </nav>
     

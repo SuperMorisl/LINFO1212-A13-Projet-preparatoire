@@ -11,20 +11,22 @@ Celle-ci permettra à des citoyens de la commune d'**Ottignies-Louvain-la-Neuve*
 
 ## 🗂️ Organisation du projet
   
+#### 📁 Features
+- Fichiers **.features**
+
 #### 📁 Static
 - Fichiers "photos" (**.png, .jpg**,...)
 - Fichier **.css**
 - Fichier **.js**
   
 #### 📁 Templates
-- Fichiers **.html**
-  
-#### 📁 Features
-- Fichiers **.features**
+- Fichiers **.ejs**
   
 #### 🌱 Racine
 - 📄 **README**
 - **.gitignore**
+- **app.js**
+- **package.json**
 
 ## 🛠️ Stack
 ### 🎨 - Front-end

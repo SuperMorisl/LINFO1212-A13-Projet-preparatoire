@@ -4,64 +4,66 @@ var app = express();
 var bodyParser = require("body-parser");
 var fs = require("fs");
 
-app.use(session({
-  secret: 'monsecret',       
-  resave: false,             
-  saveUninitialized: true    
+// Configuration de l'app
+app.use(session({ // On crée une session (Cookies)
+  secret: 'monsecret',
+  resave: false,
+  saveUninitialized: true
 }));
 
-app.use(express.static(__dirname + '/static'));  // poir les fichiers static
-
-// configurer EJS
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/templates');
-app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(express.static('static'));  // Utilise les fichiers de front-end du dossier static
+app.set('views', 'templates'); // Les fichiers html/ejs sont dans templates
+app.set('view engine', 'ejs'); // On utilise ejs comme moteur de vue
+app.use(bodyParser.urlencoded({ extended: true })); // Permet de recupérer les éléments obtenus par la méthode POST
 
 
-// route de test
-app.get('/hello',(req,res) => {
-      res.send(`
-    Hola el mundo!<br>
-    привет мир !<br>
-    Hello World!<br>
-    你好世界<br>
-    Bonjour le monde!<br>
-    Buona notte!<br>
-    مرحبا بالعالم<br>
-    Hallo Welt!<br>
-    здравей свят!<br>
-    hei maailma!<br>
-    mbote na mokili!<br>
-    hallo wereld!<br>
-    안녕하세요 세계<br>
-    හලෝ ලෝකය<br>
-    merhaba dünya
-  `);
-})
-// route page d'accueil
-app.get('/', function(req, res, next)  {
-  res.render('index', { today: new Date(), username: req.session.username || null }); 
+// Route de la page d'accueil
+app.get('/', function (req, res, next) {
+  res.render('index', {
+    today: new Date(),
+    username: req.session.username // a remplir avec description et adresse...
+  });
 });
 
-// route login
-app.get('/login', function(req, res,next)  {
-  res.render('login',{ error: null });
+// Route de la page login
+app.get('/login', function (req, res, next) {
+  res.render('login', { error: null }); // error permet de vérifier si le mot de passe est correct (voir dans login.ejs)
 });
-app.post('/login', function(req,res,next){
-  if (req.body.username && req.body.password == "123pass"){
-  req.session.username = req.body.username;   // stocke dans la session
-  res.redirect('/');  
-  }else {
-    res.render('login', { error: "Mot de passe incorrect" });
 
+// Fonction qui regarde le résultat du formulaire (login)
+app.post('/login', function (req, res, next) {
+  if (req.body.username && req.body.password == "123pass") {
+    req.session.username = req.body.username;   // Stocke dans le username dans la session
+    res.redirect('/');
   }
-  console.log(req.body);
+  else {
+    res.render('login', { error: "Mot de passe incorrect" });
+  }
+  console.log("Page login :", req.body); // Pour le debugging (voir ce que l'utilisateur a entrée comme username et mot de passe)
 });
 
-// route report
-app.get('/report', function(req, res) {
-  res.render('report');
+// Route de la page report
+app.get('/report', function (req, res, next) {
+  if (req.session.username) { // On peut report qui si on est connecté, sinon on est redirigé vers la page de connexion
+    res.render('report', { username: req.session.username });
+  }
+  else {
+    res.redirect("login")
+  }
 });
 
+// Fonction qui regarde le résultat du formulaire (report)
+app.post('/report', function (req, res, next) {
+  if (req.session.username) { // Si l'utilisateur est connecté, on stocke la description et l'adresse dans la session
+    req.session.description = req.body.description;
+    req.session.adresse = req.body.adresse;
+    res.redirect('/');
+  }
+  else {
+    res.redirect('login'); // error permet de vérifier si le mot de passe est correct (voir dans login.ejs)
+  }
+  console.log("Page report : ", req.body); // Pour le debugging (voir ce que l'utilisateur a entrée comme username et mot de passe)
+});
 
 app.listen(8080);
+console.log("Url du serveur : http://localhost:8080");
