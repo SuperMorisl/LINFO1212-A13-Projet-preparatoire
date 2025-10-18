@@ -33,7 +33,7 @@ describe("Check username validity", () => {
         expect(result).toBeFalsy();
     })
 
-})
+});
 
 describe("Check user password validity", () => {
     test ("Password is valid", () => {
@@ -50,6 +50,40 @@ describe("Check user password validity", () => {
         let password = "ThisPasswordIsWayTooLongToBeValid";
         let result = checkuserInput.isValidPassword(password);
         expect(result).toBeFalsy();
+    });
+    test ("Password format is invalid", () => {
+        let password = "thispasswordisinvalid";
+        let result = checkuserInput.isValidPassword(password);
+        expect(result).toBeFalsy();
     })
+
+});
+
+describe("Check user e-mail", () => {
+    test ("e-mail is valid", () => {
+        let email = "name.surname@gmail.com";
+        let result = checkuserInput.isValidEmail(email);
+        expect(result).toBeTruthy();
+    });
+    test ("e-mail starts with an invalid character", () => {
+        let email = "!name.surname@gmail.com";
+        let result = checkuserInput.isValidEmail(email);
+        expect(result).toBeFalsy();  
+    });
+    test ("e-mail contains at least one invalid character", () => {
+        let email = "n!me.surname@gmail.com";
+        let result = checkuserInput.isValidEmail(email);
+        expect(result).toBeFalsy();  
+    });
+    test ("e-mail finishes with anything other than the domain name", () => {
+        let email = "name.surname@gmail.comA";
+        let result = checkuserInput.isValidEmail(email);
+        expect(result).toBeFalsy();  
+    });
+    test ("e-mail contains two or more consecutive dots", () => {
+        let email = "name..surname@gmail.com";
+        let result = checkuserInput.isValidEmail(email);
+        expect(result).toBeFalsy();  
+    });
 
 })
