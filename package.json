@@ -1,15 +1,17 @@
 {
-  "name": "player",
+  "name": "projet_pp",
   "version": "1.0.0",
   "description": "Louvain Propre",
-  "scripts": {},
+  "jest" : {"verbose" : true},
+  "scripts": {"test" : "jest"},
   "author": "Groupe 13",
   "license": "Apache 2.0",
   "private": true,
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-    "express-session": "^1.18.2"
+    "express-session": "^1.18.2",
+    "jest": "^30.2.0"
   },
   "main": "app.js",
   "keywords": []
