@@ -1,0 +1,53 @@
+const request = require("supertest")
+const app = require("../app.js")
+
+describe("Checking the routes", () => {
+
+    test("GET / doit rendre la page d'accueil", async () => {
+        const httpRequest = await request(app).get("/");
+        expect(httpRequest.statusCode).toBe(200);
+    });
+
+    test("GET /login doit rendre la page de connexion", async () => {
+        const httpRequest = await request(app).get("/login");
+        expect(httpRequest.statusCode).toBe(200);
+    });
+
+    test("POST /login avec bon mot de passe redirige vers la page d'acceuil", async () => {
+        const httpRequest = await request(app)
+            .post("/login")
+            .type("form") // Pour simuler un envoie de données par les form du HTML
+            .send({ username: "moimeme", password: "admin123456789" });
+
+        expect(httpRequest.statusCode).toBe(302); // redirection car le mot de passe est valide
+        expect(httpRequest.headers.location).toBe("/"); // redirigé vers la page d'acceuil
+    });
+
+    test("POST /login avec mauvais mot de passe renvoie erreur", async () => {
+        const httpRequest = await request(app)
+            .post("/login")
+            .type("form") // Pour simuler un envoie de données par les form du HTML
+            .send({ username: "moimeme", password: "pass123" });
+        expect(httpRequest.statusCode).toBe(200);
+        expect(httpRequest.text).toContain("Mot de passe incorrect");
+    });
+
+    test("GET /report sans session redirige vers la page de connexion", async () => {
+        const httpRequest = await request(app).get("/report");
+        expect(httpRequest.statusCode).toBe(302); // Redirection vers login car on est pas connecté
+        expect(httpRequest.headers.location).toBe("login");
+    });
+
+    test("GET /report en étant connecté doit fonctionner", async () => {
+        const agent = request.agent(app); // Permet de conserver les cookies pour le test
+
+        // L'utilisateur se connecte
+        await agent
+            .post("/login")
+            .type("form")
+            .send({ username: "moimeme", password: "admin123456789" });
+
+        const httpRequest = await agent.get("/report");
+        expect(httpRequest.statusCode).toBe(200);
+    });
+});

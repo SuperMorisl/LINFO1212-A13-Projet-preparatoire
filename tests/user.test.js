@@ -12,7 +12,7 @@ describe("Check username validity", () => {
         expect(result).toBeFalsy();
     });
     test ("Username is too short", () => {
-        let username = "User";
+        let username = "Yo";
         let result = checkuserInput.isValidUsername(username);
         expect(result).toBeFalsy();
 
@@ -41,6 +41,11 @@ describe("Check user password validity", () => {
         let result = checkuserInput.isValidPassword(password);
         expect(result).toBeTruthy();
     });
+    test("Password is empty", () => {
+        let password = "";
+        let result = checkuserInput.isValidUsername(password);
+        expect(result).toBeFalsy();
+    });
     test ("Password is too short", () => {
         let password = "Pass123";
         let result = checkuserInput.isValidPassword(password);
@@ -64,6 +69,11 @@ describe("Check user e-mail", () => {
         let email = "name.surname@gmail.com";
         let result = checkuserInput.isValidEmail(email);
         expect(result).toBeTruthy();
+    });
+    test("e-mail is empty", () => {
+        let email = "";
+        let result = checkuserInput.isValidUsername(email);
+        expect(result).toBeFalsy();
     });
     test ("e-mail starts with an invalid character", () => {
         let email = "!name.surname@gmail.com";

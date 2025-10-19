@@ -2,8 +2,12 @@
   "name": "projet_pp",
   "version": "1.0.0",
   "description": "Louvain Propre",
-  "jest" : {"verbose" : true},
-  "scripts": {"test" : "jest"},
+  "jest": {
+    "verbose": true
+  },
+  "scripts": {
+    "test": "jest"
+  },
   "author": "Groupe 13",
   "license": "Apache 2.0",
   "private": true,
@@ -11,8 +15,12 @@
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
-    "jest": "^30.2.0"
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
   },
   "main": "app.js",
-  "keywords": []
+  "keywords": [],
+  "directories": {
+    "test": "tests"
+  }
 }

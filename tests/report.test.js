@@ -32,7 +32,7 @@ describe("Check adress validity", () => {
         expect(result).toBeFalsy();
     });
     test("Adress is too short", () => {
-        let adress = "12 Oak St, NY";
+        let adress = "Chicken 8";
         let result = checkReportInput.isValidAdress(adress);
         expect(result).toBeFalsy();
     });

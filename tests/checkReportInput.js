@@ -22,7 +22,7 @@ const checkReportInput =  {
             return false;
         }
 
-        const minLength = 20;
+        const minLength = 10;
         const maxLength = 100;
         
         if (input.length < minLength || input.length > maxLength){

@@ -3,6 +3,7 @@ var session = require('express-session');
 var app = express();
 var bodyParser = require("body-parser");
 var fs = require("fs");
+const { builtinModules } = require('module');
 
 // Configuration de l'app
 app.use(session({ // On crée une session (Cookies)
@@ -35,7 +36,7 @@ app.get('/login', function (req, res, next) {
 
 // Fonction qui regarde le résultat du formulaire (login)
 app.post('/login', function (req, res, next) {
-  if (req.body.username && req.body.password == "123pass") {
+  if (req.body.username && req.body.password == "admin123456789") {
     req.session.username = req.body.username;   // Stocke dans le username dans la session
     res.redirect('/');
   }
@@ -70,3 +71,5 @@ app.post('/report', function (req, res, next) {
 
 app.listen(8080);
 console.log("Url du serveur : http://localhost:8080");
+
+module.exports = app; // Pour les SuperTests

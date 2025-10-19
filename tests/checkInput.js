@@ -4,7 +4,7 @@ const checkuserInput = {
 
         // rajouter une condition et un test pour le cas où le username existe déjà dans la db
         
-        const minLength = 6;
+        const minLength = 3;
         const maxLength = 20;
 
         if(input.length < minLength || input.length > maxLength){
