@@ -28,6 +28,7 @@ describe("Checking the routes", () => {
             .post("/login")
             .type("form") // Pour simuler un envoie de données par les form du HTML
             .send({ username: "moimeme", password: "pass123" });
+
         expect(httpRequest.statusCode).toBe(200);
         expect(httpRequest.text).toContain("Mot de passe incorrect");
     });
@@ -38,16 +39,35 @@ describe("Checking the routes", () => {
         expect(httpRequest.headers.location).toBe("login");
     });
 
-    test("GET /report en étant connecté doit fonctionner", async () => {
+    test("GET et POST /report en étant connecté sans erreur", async () => {
         const agent = request.agent(app); // Permet de conserver les cookies pour le test
+        const informations = [
+            "moimeme", 
+            "An incident happened yesterday.",  
+            "123 Maple Street, Apt 45, Springfield, IL 62704"
+        ];
 
         // L'utilisateur se connecte
         await agent
             .post("/login")
             .type("form")
-            .send({ username: "moimeme", password: "admin123456789" });
+            .send({ username: informations[0], password: "admin123456789" });
 
         const httpRequest = await agent.get("/report");
         expect(httpRequest.statusCode).toBe(200);
+
+        // L'utilisateur entre un incident
+        const httpRequest2 = await agent
+            .post("/report")
+            .type("form")
+            .send({description: informations[1], adresse: informations[2]});
+        
+        expect(httpRequest2.statusCode).toBe(302); // Redirection vers la page d'acceuil
+        expect(httpRequest2.headers.location).toBe("/");
+
+        const httpRequest3 = await agent.get('/'); // On verifie que les infos sont à jour sur la page d'acceuil
+        for (const info of informations) {
+            expect(httpRequest3.text).toContain(info);
+        }
     });
 });
