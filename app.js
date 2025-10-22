@@ -4,6 +4,18 @@ var app = express();
 var bodyParser = require("body-parser");
 var fs = require("fs");
 const { builtinModules } = require('module');
+const { MongoClient } = require('mongodb');
+
+
+//configuration et connexion a la db
+async function getIncidents() {
+  const client = await MongoClient.connect("mongodb://localhost:27017/");
+  const dbo = client.db("incidents");
+  const result = await dbo.collection("incidents").find({}).toArray();
+  client.close();
+  return result;
+}
+
 
 // Configuration de l'app
 app.use(session({ // On crée une session (Cookies)
@@ -19,14 +31,21 @@ app.use(bodyParser.urlencoded({ extended: true })); // Permet de recupérer les 
 
 
 // Route de la page d'accueil
-app.get('/', function (req, res, next) {
+app.get('/', async function (req, res, next) {
+  try{
+  const incidents = await getIncidents();
   res.render('index', {
-    today: new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+    today: new Date().toLocaleDateString('fr-FR', 
+    { weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric' }),
     username: req.session.username,
-    description: req.session.description,
-    adresse: req.session.adresse
-
-  });
+    incidents : incidents         //les incidents sont stcokés dans incidents
+  })
+  }catch (err) {
+    res.status(500).send("Probléme avec la récup des données dans la db");
+  }
 });
 
 // Route de la page login
