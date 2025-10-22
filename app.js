@@ -48,11 +48,11 @@ app.post('/login', function (req, res, next) {
 
 // Route de la page report
 app.get('/report', function (req, res, next) {
-  if (req.session.username) { // On peut report qui si on est connecté, sinon on est redirigé vers la page de connexion
+  if (req.session.username) { // On peut report que si on est connecté, sinon on est redirigé vers la page de connexion
     res.render('report', { username: req.session.username });
   }
   else {
-    res.redirect("login")
+    res.render('login', {error: "Pour reporter un incident il faut être connecté"})
   }
 });
 
