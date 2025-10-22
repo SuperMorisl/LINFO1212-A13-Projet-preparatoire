@@ -48,7 +48,16 @@
                     <th>Date</th>
                 </tr>
             </thead>
-
+            <tbody>
+                <% incidents.forEach(function(incident){ %>
+                    <tr>
+                    <td><%= incident.Descritpion %></td>
+                    <td><%= incident.Adresse %></td>
+                    <td><%= incident.username %></td>
+                    <td><%= incident.Date %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
         </table>
     </div>
 </body>
