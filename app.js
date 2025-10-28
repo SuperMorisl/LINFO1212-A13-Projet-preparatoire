@@ -13,9 +13,9 @@ let incidentsCollection = null; // Collection incidents
 // Initialisation DB + seed si vide
 async function initDB() {
     await client.connect();
-    const dbo = client.db("incidents");
+    const dbo = client.db("fixmycity");
     incidentsCollection = dbo.collection("incidents");
-    console.log("Connexion à MongoDB réussie !");
+    console.log("Connexion à MongoDB (fixmycity) réussie !");
 
     // Si la collection est vide, on la remplie automatiquement avec les données du fichier JSON
     const count = await incidentsCollection.countDocuments();
