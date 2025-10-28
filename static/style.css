@@ -247,14 +247,17 @@ p.date span { /* pour entourer que la partie de la date */
 
 /* le tableau avec les signalements */
 table.signalements{
+    margin: 2rem auto;
     text-size-adjust: 100%;
     margin-top: 4%;
     border: 2px solid rgba(166, 124, 82, 0.55); 
+    border-spacing: 5rem 0.5rem;
     border-collapse: collapse; /* pour que la bordure du tableau html se fonde à celle qu'on créé avec border */
     width: 80%;
 }
 
 table.signalements th, table.signalements td {
+    padding: 1rem 1rem;
     border: 2px solid rgba(166, 124, 82, 0.55); 
     padding: 8px;
     text-align: center;
@@ -264,7 +267,7 @@ table.signalements th{
     background-color: #D8BFAA;
 }
 
-table.signalements td:hover{ /* hover sert à faire en sorte que lorsqu'on clique sur une case du tableau celle-ci change de couleur */
+table.signalements tr:hover{ /* hover sert à faire en sorte que lorsqu'on clique sur une case du tableau celle-ci change de couleur */
     background-color: #cdc0b7;
     transition: 0.5s; /* le temps qu'il faut pour le changement de couleur */
 }
