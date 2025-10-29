@@ -9,12 +9,14 @@ const { MongoClient } = require('mongodb');
 // Connexion à la database
 const client = new MongoClient("mongodb://localhost:27017");
 let incidentsCollection = null; // Collection incidents
+let loginCollection = null; // Collection login
 
 // Initialisation DB + seed si vide
 async function initDB() {
     await client.connect();
     const dbo = client.db("fixmycity");
     incidentsCollection = dbo.collection("incidents");
+    loginCollection = dbo.collection("login");
     console.log("Connexion à MongoDB (fixmycity) réussie !");
 
     // Si la collection est vide, on la remplie automatiquement avec les données du fichier JSON
@@ -28,6 +30,19 @@ async function initDB() {
         await incidentsCollection.insertMany(documents); // Puis on insert les entrées dans la collection vide
         console.log("La collection 'incidents' a bien été initialisée !");
     }
+    
+    // Même chose mais pour la collection login
+    const countUsers = await loginCollection.countDocuments();
+    if (countUsers === 0) {
+        const dataRaw = fs.readFileSync(path.join('database', 'login.json'), 'utf8');
+        const documents = dataRaw
+            .split("\n") 
+            .filter(line => line.trim() !== '') 
+            .map(line => JSON.parse(line)); 
+        await loginCollection.insertMany(documents); 
+        console.log("La collection 'login' a bien été initialisée !");
+    }
+
 }
 
 // Récupération des incidents
@@ -37,6 +52,10 @@ async function getIncidents() {
     return await incidentsCollection.find().toArray();
 }
 
+async function getUsers() { // Est utilisé dans la fonction testUsers() mais peut être supprimé
+  if (!loginCollection) throw new Error("La collection login n'a pas été trouvée...");
+  return await loginCollection.find().toArray();
+}
 
 // Configuration de l'app
 app.use(session({ // On crée une session (Cookies)
@@ -76,16 +95,59 @@ app.get('/login', function (req, res) {
   res.render('login', { error: null }); // error permet de vérifier si le mot de passe est correct (voir dans login.ejs)
 });
 
+
+async function testUsers() { // Test pour voir les utilisateurs qu'il faudra supprimer
+  await initDB();
+  const users = await getUsers();
+  for (const user of users) {
+    console.log(user.name);
+  }
+}
+
+testUsers();
+
 // Fonction qui regarde le résultat du formulaire (login)
-app.post('/login', function (req, res) {
-  if (req.body.username && req.body.password == "admin123456789") {
-    req.session.username = req.body.username;   // Stocke dans le username dans la session
+app.post('/login', async function (req, res) {
+
+  try {
+      const actualUser = await loginCollection.findOne({ username: req.body.username }); // On réccupère l'utilisateur s'il existe dans la db
+      if (actualUser && req.body.password == actualUser.password) { // Vérification de si l'utilisateur existe dans db
+          req.session.username = req.body.username;   // Stocke le username dans la session
+          res.redirect('/');
+      }
+      else if (!actualUser) {
+        res.render('login', { error: "Utilisateur non trouvé" });
+      }
+      else if (req.body.password != actualUser.password) {
+          res.render('login', { error: "Mot de passe incorrect" });
+      }
+      console.log("Page login :", req.body); // Pour le debugging (voir ce que l'utilisateur a entrée comme username et mot de passe)
+    } 
+
+    catch (err) {
+        res.status(500).send("Probléme avec la récup des données dans la db");
+    }
+
+});
+
+// Fonction qui regarde le résultat du formulaire (register)
+app.post('/register', async function (req, res) { // Il faudra rajouter des tests pour cette partie 
+  const user = await loginCollection.findOne({ username: req.body.username });
+  if (user) { // si l'utilisateur existe déjà dans la db
+    res.render('login', { error: "L'utilisateur existe déjà" }); // Il faudra changer le error parce qu'il y en a deux donc il s'affiche en double
+    return;
+  }
+  else if (req.body.username && req.body.password && req.body.name && req.body.email){
+    const newUser = {"username" : req.body.username, "password" : req.body.password, "name" : req.body.name, "email" : req.body.email};
+    await loginCollection.insertOne(newUser);
+    console.log("Nouvel utilisateur ajouté :", req.body.username); // Pour vérifier que ça fonctionne bien
+
+    // le nouvel utilisateur n'est pas ajouté dans le fichier .json --> voir fonction testUsers() pour voir les nouveaux utilisateurs ajoutés
+
+    req.session.username = req.body.username;
     res.redirect('/');
   }
-  else {
-    res.render('login', { error: "Mot de passe incorrect" });
-  }
-  console.log("Page login :", req.body); // Pour le debugging (voir ce que l'utilisateur a entrée comme username et mot de passe)
+
 });
 
 // Route de la page report
