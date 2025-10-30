@@ -6,6 +6,9 @@ var fs = require("fs");
 const path = require('path');
 const { MongoClient } = require('mongodb');
 
+const checkuserInput = require('./tests/checkInput');
+const checkReportInput = require('./tests/checkReportInput');
+
 // Connexion à la database
 const client = new MongoClient("mongodb://localhost:27017");
 let incidentsCollection = null; // Collection incidents
@@ -122,14 +125,23 @@ app.post('/register', async function (req, res) { // Il faudra rajouter des test
   try {
     const user = await loginCollection.findOne({ username: req.body.username });
     if (user) { // si l'utilisateur existe déjà dans la db
-      res.render('login', { error: "L'utilisateur existe déjà", hasAccount: false }); 
+      res.render('login', { error: "L'utilisateur existe déjà", hasAccount: false });
     }
     else if (req.body.username && req.body.password && req.body.name && req.body.email) {
+      if (!checkuserInput.isValidUsername(req.body.username)) {
+        res.render('login', { error: "Nom d'utilisateur invalide", hasAccount: false });
+      }
+      if (!checkuserInput.isValidEmail(req.body.email)) {
+        res.render('login', { error: "Adresse email invalide", hasAccount: false });
+      }
+      if (!checkuserInput.isValidPassword(req.body.password)) {
+        res.render('login', { error: "Mot de passe invalide", hasAccount: false });
+      }
+
       const newUser = { "username": req.body.username, "password": req.body.password, "name": req.body.name, "email": req.body.email };
       await loginCollection.insertOne(newUser);
       console.log("Nouvel utilisateur ajouté :", req.body.username); // Pour vérifier que ça fonctionne bien
       // /!\ le nouvel utilisateur n'est pas ajouté dans le fichier .json
-
       req.session.username = req.body.username;
       res.redirect('/');
     }
@@ -151,14 +163,17 @@ app.get('/report', function (req, res) {
 
 // Fonction qui regarde le résultat du formulaire (report)
 app.post('/report', function (req, res) {
-  if (req.session.username) { // Si l'utilisateur est connecté, on stocke la description et l'adresse dans la session
-    req.session.description = req.body.description;
-    req.session.adresse = req.body.adresse;
-    res.redirect('/');
+  if (!checkReportInput.isValidDescription(req.body.description)) {
+    res.render('report', { username: req.session.username, error: "Description invalide" });
   }
-  else {
-    res.redirect('login'); // error permet de vérifier si le mot de passe est correct (voir dans login.ejs)
+  if (!checkReportInput.isValidAdress(req.body.adresse)) {
+    res.render('report', { username: req.session.username, error: "Adresse invalide" });
   }
+
+  req.session.description = req.body.description;
+  req.session.adresse = req.body.adresse;
+  res.redirect('/');
+
   console.log("Page report : ", req.body); // Pour le debugging (voir ce que l'utilisateur a entrée comme username et mot de passe)
 });
 
