@@ -59,12 +59,13 @@ Installez les dépendances (assurez-vous d’avoir **Node.js** et **MongoDB** in
 
 ---
 #### 🔹 Explorer la base de données (après avoir lancé l'application web !)  
+`sudo systemctl start mongod`  
 `mongosh`  
 `use fixmycity`
 
 2 collections :  
 - 🧾 **incidents** `db.incidents.find()`
-- 👤 **comptes** `db.comptes.find()`
+- 👤 **login** `db.login.find()`
 
 ---
 

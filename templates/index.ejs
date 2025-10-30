@@ -34,11 +34,12 @@
             
         </div>
     </nav>
-    <div class="milieu">
-        <button class="add">
-            <a href="/report">Reporter un incident</a>
-        </button>
-        <p class="date">Jour actuel : <span> <%= today %></span></p>
+   
+        <div class="info">
+        <a class="report" href="/report">Reporter un incident</a>
+        
+        <span class="brown">Jour actuel : <span> <%= today %></span></span>
+        </div>
         <table class="signalements">
             <thead>
                 <tr>
@@ -59,7 +60,7 @@
                 <% }); %>
             </tbody>
         </table>
-    </div>
+
 </body>
 
 </html>

@@ -13,43 +13,43 @@ let loginCollection = null; // Collection login
 
 // Initialisation DB + seed si vide
 async function initDB() {
-    await client.connect();
-    const dbo = client.db("fixmycity");
-    incidentsCollection = dbo.collection("incidents");
-    loginCollection = dbo.collection("login");
-    console.log("Connexion à MongoDB (fixmycity) réussie !");
+  await client.connect();
+  const dbo = client.db("fixmycity");
+  incidentsCollection = dbo.collection("incidents");
+  loginCollection = dbo.collection("login");
+  console.log("Connexion à MongoDB (fixmycity) réussie !");
 
-    // Si la collection est vide, on la remplie automatiquement avec les données du fichier JSON
-    const count = await incidentsCollection.countDocuments();
-    if (count === 0) {
-        const dataRaw = fs.readFileSync(path.join('database', 'problems.json'), 'utf8');
-        const documents = dataRaw
-            .split("\n") // les sauts à la ligne marque un élément
-            .filter(line => line.trim() !== '') // ignore les lignes vides
-            .map(line => JSON.parse(line)); // chaque ligne JSON -> JS
-        await incidentsCollection.insertMany(documents); // Puis on insert les entrées dans la collection vide
-        console.log("La collection 'incidents' a bien été initialisée !");
-    }
-    
-    // Même chose mais pour la collection login
-    const countUsers = await loginCollection.countDocuments();
-    if (countUsers === 0) {
-        const dataRaw = fs.readFileSync(path.join('database', 'login.json'), 'utf8');
-        const documents = dataRaw
-            .split("\n") 
-            .filter(line => line.trim() !== '') 
-            .map(line => JSON.parse(line)); 
-        await loginCollection.insertMany(documents); 
-        console.log("La collection 'login' a bien été initialisée !");
-    }
+  // Si la collection est vide, on la remplie automatiquement avec les données du fichier JSON
+  const countIncidents = await incidentsCollection.countDocuments();
+  if (countIncidents === 0) {
+    const dataRaw = fs.readFileSync(path.join('database', 'problems.json'), 'utf8');
+    const documents = dataRaw
+      .split("\n") // les sauts à la ligne marque un élément
+      .filter(line => line.trim() !== '') // ignore les lignes vides
+      .map(line => JSON.parse(line)); // chaque ligne JSON -> JS
+    await incidentsCollection.insertMany(documents); // Puis on insert les entrées dans la collection vide
+    console.log("La collection 'incidents' a bien été initialisée !");
+  }
+
+  // Même chose mais pour la collection login
+  const countUsers = await loginCollection.countDocuments();
+  if (countUsers === 0) {
+    const dataRaw = fs.readFileSync(path.join('database', 'login.json'), 'utf8');
+    const documents = dataRaw
+      .split("\n")
+      .filter(line => line.trim() !== '')
+      .map(line => JSON.parse(line));
+    await loginCollection.insertMany(documents);
+    console.log("La collection 'login' a bien été initialisée !");
+  }
 
 }
 
 // Récupération des incidents
 async function getIncidents() {
-    // on recupère toutes les données si la collection 'incidents' existe
-    if (!incidentsCollection) throw new Error("La collection incidents n'a pas été trouvée...");
-    return await incidentsCollection.find().toArray();
+  // on recupère toutes les données si la collection 'incidents' existe
+  if (!incidentsCollection) throw new Error("La collection incidents n'a pas été trouvée...");
+  return await incidentsCollection.find().toArray();
 }
 
 async function getUsers() { // Est utilisé dans la fonction testUsers() mais peut être supprimé
@@ -92,62 +92,51 @@ app.get('/', async function (req, res) {
 
 // Route de la page login
 app.get('/login', function (req, res) {
-  res.render('login', { error: null }); // error permet de vérifier si le mot de passe est correct (voir dans login.ejs)
+  res.render('login', { error: null, hasAccount: null }); // error permet de vérifier si le mot de passe est correct (voir dans login.ejs)
 });
-
-
-async function testUsers() { // Test pour voir les utilisateurs qu'il faudra supprimer
-  await initDB();
-  const users = await getUsers();
-  for (const user of users) {
-    console.log(user.name);
-  }
-}
-
-testUsers();
 
 // Fonction qui regarde le résultat du formulaire (login)
 app.post('/login', async function (req, res) {
 
   try {
-      const actualUser = await loginCollection.findOne({ username: req.body.username }); // On réccupère l'utilisateur s'il existe dans la db
-      if (actualUser && req.body.password == actualUser.password) { // Vérification de si l'utilisateur existe dans db
-          req.session.username = req.body.username;   // Stocke le username dans la session
-          res.redirect('/');
-      }
-      else if (!actualUser) {
-        res.render('login', { error: "Utilisateur non trouvé" });
-      }
-      else if (req.body.password != actualUser.password) {
-          res.render('login', { error: "Mot de passe incorrect" });
-      }
-      console.log("Page login :", req.body); // Pour le debugging (voir ce que l'utilisateur a entrée comme username et mot de passe)
-    } 
-
-    catch (err) {
-        res.status(500).send("Probléme avec la récup des données dans la db");
+    const actualUser = await loginCollection.findOne({ username: req.body.username }); // On réccupère l'utilisateur s'il existe dans la db
+    if (actualUser && req.body.password == actualUser.password) { // Vérification de si l'utilisateur existe dans db
+      req.session.username = req.body.username;   // Stocke le username dans la session
+      res.redirect('/');
     }
+    else if (!actualUser) {
+      res.render('login', { error: "Utilisateur non trouvé", hasAccount: true });
+    }
+    else if (req.body.password != actualUser.password) {
+      res.render('login', { error: "Mot de passe incorrect", hasAccount: true });
+    }
+  }
+  catch (err) {
+    res.status(500).send("Probléme avec la récup des données dans la db");
+  }
 
 });
 
 // Fonction qui regarde le résultat du formulaire (register)
 app.post('/register', async function (req, res) { // Il faudra rajouter des tests pour cette partie 
-  const user = await loginCollection.findOne({ username: req.body.username });
-  if (user) { // si l'utilisateur existe déjà dans la db
-    res.render('login', { error: "L'utilisateur existe déjà" }); // Il faudra changer le error parce qu'il y en a deux donc il s'affiche en double
-    return;
+  try {
+    const user = await loginCollection.findOne({ username: req.body.username });
+    if (user) { // si l'utilisateur existe déjà dans la db
+      res.render('login', { error: "L'utilisateur existe déjà", hasAccount: false }); 
+    }
+    else if (req.body.username && req.body.password && req.body.name && req.body.email) {
+      const newUser = { "username": req.body.username, "password": req.body.password, "name": req.body.name, "email": req.body.email };
+      await loginCollection.insertOne(newUser);
+      console.log("Nouvel utilisateur ajouté :", req.body.username); // Pour vérifier que ça fonctionne bien
+      // /!\ le nouvel utilisateur n'est pas ajouté dans le fichier .json
+
+      req.session.username = req.body.username;
+      res.redirect('/');
+    }
   }
-  else if (req.body.username && req.body.password && req.body.name && req.body.email){
-    const newUser = {"username" : req.body.username, "password" : req.body.password, "name" : req.body.name, "email" : req.body.email};
-    await loginCollection.insertOne(newUser);
-    console.log("Nouvel utilisateur ajouté :", req.body.username); // Pour vérifier que ça fonctionne bien
-
-    // le nouvel utilisateur n'est pas ajouté dans le fichier .json --> voir fonction testUsers() pour voir les nouveaux utilisateurs ajoutés
-
-    req.session.username = req.body.username;
-    res.redirect('/');
+  catch (err) {
+    res.status(500).send("Probléme avec la récup des données dans la db");
   }
-
 });
 
 // Route de la page report
@@ -156,7 +145,7 @@ app.get('/report', function (req, res) {
     res.render('report', { username: req.session.username });
   }
   else {
-    res.render('login', { error: "Pour reporter un incident il faut être connecté" })
+    res.render('login', { error: "Pour reporter un incident il faut être connecté", hasAccount: true }) // hasAccount ici est arbitraire
   }
 });
 
@@ -176,15 +165,15 @@ app.post('/report', function (req, res) {
 
 // Démarrage du serveur après initialisation de la DB
 async function startServer() {
-    try {
-        await initDB();              // On attend que la DB soit prête
-        app.listen(8080);            // Puis on démarre le serveur
-        console.log("Url du serveur : http://localhost:8080");
-    } catch (err) {
-        console.error("Erreur lors de l'initialisation de MongoDB... :", err);
-    }
+  try {
+    await initDB();              // On attend que la DB soit prête
+    app.listen(8080);            // Puis on démarre le serveur
+    console.log("Url du serveur : http://localhost:8080");
+  } catch (err) {
+    console.error("Erreur lors de l'initialisation de MongoDB... :", err);
+  }
 }
 
-startServer();  
+startServer();
 
 module.exports = app; // Pour les SuperTests
