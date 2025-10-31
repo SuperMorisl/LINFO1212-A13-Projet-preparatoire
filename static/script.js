@@ -1,7 +1,7 @@
-function showDay() { // pas utilisé, on le fait du côté serveur
-  let day = new Date();
-  let days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-  innerHTML = days[day.getDay()];
+function openPopup() {
+  document.getElementById("popUp").style.display = "block";
 }
 
-window.onload = showDay;     //dés que la page se charge on a le jour
+function closePopup() {
+  document.getElementById("popUp").style.display = "none";
+}

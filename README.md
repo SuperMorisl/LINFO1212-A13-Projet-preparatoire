@@ -50,7 +50,8 @@ Installez les dépendances (assurez-vous d’avoir **Node.js** et **MongoDB** in
 - `npm install`  
 
 ---
-#### 🔹 Lancer l'application web  
+#### 🔹 Lancer l'application web
+`sudo systemctl start mongod`
 `node app.js`
 
 ---

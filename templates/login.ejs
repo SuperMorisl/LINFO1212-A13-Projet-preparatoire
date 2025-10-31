@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>FixMyCity | Se connecter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="app.js" defer></script>
+    <script src="/script.js" defer></script>
     <link rel="icon" href="/logo.jpg">
     <link rel="stylesheet" href="/style.css">
 </head>
@@ -43,6 +43,53 @@
             </div>
         </form>
         <h1 class="title">Nouveau compte</h1>
+        
+        <!-- Bouton qui ouvre la pop-up -->
+        <p>
+            <button class="popUp" onclick="openPopup()">Règles de syntax</button>
+        </p>
+        <!-- Pop-up -->
+        <div class="popup" id="popUp">
+            <h1 class="title">Nom d'utilisateur</h1>
+            <ul>
+                <li>Doit contenir entre <strong>3</strong> et <strong>20 caractères</strong></li>
+                <li>Ne doit pas contenir de caractères spéciaux</li>
+                <li>Peut contenir des chiffres, mais <strong>pas au milieu du nom</strong><br>
+                    (ex. ✅ 123Paul ou Paul123 — ❌ Pa12ul)
+                </li>
+            </ul>
+        
+            <h1 class="title">Mot de passe</h1>
+            <ul>
+                <li>Doit contenir entre <strong>12</strong> et <strong>30 caractères</strong></li>
+                <li>Doit inclure au moins :
+                    <ul>
+                        <li>Une <strong>lettre majuscule</strong></li>
+                        <li>Une <strong>lettre minuscule</strong></li>
+                        <li>Un <strong>chiffre</strong></li>
+                    </ul>
+                </li>
+            </ul>
+        
+            <h1 class="title">Adresse e-mail</h1>
+            <ul>
+                <li>Doit commencer par une lettre ou un chiffre</li>
+                <li>Peut contenir des lettres, chiffres _ - ou .</li>
+                <li>Ne doit pas contenir plusieurs points consécutifs</li>
+                <li>Doit se terminer par un domaine valide :
+                    <ul>
+                        <li>@gmail.com</li>
+                        <li>@outlook.com</li>
+                        <li>@hotmail.com</li>
+                    </ul>
+                </li>
+            </ul>
+        
+            <button class="close-btn" onclick="closePopup()">X</button>
+        </div>
+        
+        <!-- Fin de la Pop-up-->
+
         <form action="/register" method="post">
             <div class="formulaire">
                 <p>

@@ -158,7 +158,8 @@ div.formulaire textarea:focus { /* s'active quand on remplie le formulaire */
     border: 3px solid #D8BFAA; 
 }
 
-div.formulaire button {
+div.formulaire button,
+button.popUp {
     display: flex; /* necessaire pour centrer verticalement et horizontalement */
     justify-content: center; /* centre horizontalement */
     align-items: center;     /* centre verticalement */
@@ -178,7 +179,8 @@ div.formulaire button {
     transition: background-color 0.4s ease; /* transition pour hover */
 }
 
-div.formulaire button:hover { /* Comportement quand on est sur le button */
+div.formulaire button:hover,
+button.popUp:hover { /* Comportement quand on est sur le button */
     background-color: #8C6239;
 }
 
@@ -195,6 +197,38 @@ div.login_page {
     justify-content: center;
     align-items: center;
     font-size: 1.1rem; /* pour rendre le texte plus lisible */
+}
+
+div.popup {
+  display: none; /* Cachée par défaut mais modifiable dans le js static */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centre la popUp en + de top et left */
+  overflow-y: auto; /* permet de scroller */
+
+  width: 80%;
+  max-height: 80vh;
+  padding: 2rem;
+  z-index: 100; /* Juste pour dire qu'il s'affiche à l'avant plan*/
+
+  background: white;
+  border: 3px solid rgba(166, 124, 82, 0.55);
+  border-radius: 15px;
+}
+
+button.close-btn {
+  background-color: #ff4557;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button.close-btn:hover {
+  background-color: #dc3545;
 }
 
 
