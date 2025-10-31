@@ -217,6 +217,10 @@ div.popup {
   border-radius: 15px;
 }
 
+button.popUp {
+    margin-left: 2%;
+}
+
 button.close-btn {
   background-color: #ff4557;
   color: white;
@@ -307,6 +311,11 @@ table.signalements tr:hover{ /* hover sert à faire en sorte que lorsqu'on cliqu
 
     h1.title::before {
         height: 0.15rem;
+    }
+
+    button.popUp {
+        margin: auto;
+        margin-top: 1.5rem;
     }
 
     div.info {

@@ -30,6 +30,39 @@
     </nav>
     
     <h1 class="title">Signaler un nouvel incident</h1>
+    
+    <!-- Bouton qui ouvre la pop-up -->
+    <p>
+        <button class="popUp" onclick="openPopup()">Règles de syntax</button>
+    </p>
+    
+    <!-- Pop-up -->
+    <div class="popup" id="popUp">
+        <h1 class="title">Description</h1>
+        <ul>
+            <li>
+                <p>Doit contenir entre <strong>20</strong> et <strong>400 caractères</strong></p>
+            </li>
+        </ul>
+    
+        <h1 class="title">Adresse</h1>
+        <ul>
+            <li>
+                <p>Doit contenir entre <strong>10</strong> et <strong>100 caractères</strong></p>
+            </li>
+            <li>
+                <p>Ne doit pas contenir les caractères spéciaux :</p>
+                <ul>
+                    <li>
+                        <p><strong>&lt; &gt; @ # $ %</strong></p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    
+        <button class="close-btn" onclick="closePopup()">X</button>
+    </div>
+    <!-- Fin de la Pop-up -->
 
     <form method="post">
         <div class="formulaire">
