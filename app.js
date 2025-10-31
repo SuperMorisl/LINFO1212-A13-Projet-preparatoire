@@ -154,7 +154,7 @@ app.post('/register', async function (req, res) { // Il faudra rajouter des test
 // Route de la page report
 app.get('/report', function (req, res) {
   if (req.session.username) { // On peut report que si on est connecté, sinon on est redirigé vers la page de connexion
-    res.render('report', { username: req.session.username });
+    res.render('report', { username: req.session.username, error: null });
   }
   else {
     res.render('login', { error: "Pour reporter un incident il faut être connecté", hasAccount: true }) // hasAccount ici est arbitraire
@@ -166,15 +166,14 @@ app.post('/report', function (req, res) {
   if (!checkReportInput.isValidDescription(req.body.description)) {
     res.render('report', { username: req.session.username, error: "Description invalide" });
   }
-  if (!checkReportInput.isValidAdress(req.body.adresse)) {
+  else if (!checkReportInput.isValidAdress(req.body.adresse)) {
     res.render('report', { username: req.session.username, error: "Adresse invalide" });
   }
-
-  req.session.description = req.body.description;
-  req.session.adresse = req.body.adresse;
-  res.redirect('/');
-
-  console.log("Page report : ", req.body); // Pour le debugging (voir ce que l'utilisateur a entrée comme username et mot de passe)
+  else {
+    req.session.description = req.body.description;
+    req.session.adresse = req.body.adresse;
+    res.redirect('/');
+  }
 });
 
 
