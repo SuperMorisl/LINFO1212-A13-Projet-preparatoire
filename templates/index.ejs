@@ -21,7 +21,7 @@
             <div class="search">
                 <form action="/search" method="post">
                     <input type="text" id="searchBar" name="barre de Recherche" placeholder="Adresse">
-                    <button type="submit" onclick='searchBarButton()'></button>
+                    <button type="submit" onclick='displayMessageForSearchedIncidents()'></button>
                 </form>
             </div>
 
@@ -41,24 +41,38 @@
         <span class="brown">Jour actuel : <span> <%= today %></span></span>
         </div>
         <table class="signalements">
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Adresse</th>
-                    <th>Rapporté par</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% incidents.forEach(function(incident){ %>
-                    <tr>
-                    <td><%= incident.Description %></td>
-                    <td><%= incident.Adresse %></td>
-                    <td><%= incident.Username %></td>
-                    <td><%= incident.Date %></td>
-                    </tr>
-                <% }); %>
-            </tbody>
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th>Adresse</th>
+            <th>Rapporté par</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+
+        <% if (searchedIncidents && searchedIncidents.length > 0) { %>
+        <tbody>
+        <% searchedIncidents.forEach(function(searchedIncidents){ %>
+        <tr>
+          <td><%= searchedIncidents.Description %></td>
+          <td><%= searchedIncidents.Adresse %></td>
+          <td><%= searchedIncidents.Username %></td>
+          <td><%= searchedIncidents.Date %></td>
+        </tr>
+        <% }); %>
+        </tbody>
+        <% } else { %>
+        <tbody>
+        <% incidents.forEach(function(incident) { %>
+        <tr>
+          <td><%= incident.Description %></td>
+          <td><%= incident.Adresse %></td>
+          <td><%= incident.Username %></td>
+          <td><%= incident.Date %></td>
+        </tr>
+        <% }); %>
+        </tbody>
+        <% } %>
         </table>
 
 </body>

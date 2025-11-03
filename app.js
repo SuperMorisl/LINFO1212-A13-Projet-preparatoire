@@ -86,7 +86,8 @@ app.get('/', async function (req, res) {
           day: 'numeric'
         }),
       username: req.session.username,
-      incidents: incidents   //les incidents sont stockés dans incidents
+      incidents: incidents,   // Les incidents sont stockés dans incidents
+      searchedIncidents: []  // Pour stocker les incidents qui sont recherchés via la barre de recherche 
     })
   } catch (err) {
     res.status(500).send("Probléme avec la récup des données dans la db");
@@ -177,7 +178,29 @@ app.post('/report', function (req, res) {
 });
 
 // Fonction pour la barre de recherche de la page index
+app.post('/search', async function (req, res) {
+  const adress = req.body.adresse;
+  try {
+    const searchedIncidents = await incidentsCollection.find({ "Adresse": adress }).toArray();
+    const incidents = [];
+    res.render('index', {
+      today: new Date().toLocaleDateString('fr-FR',
+        {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+      username: req.session.username,
+      incidents: incidents,   // Tous les incidents dans la db
+      searchedIncidents: searchedIncidents  // Pour stocker les incidents qui sont recherchés via la barre de recherche 
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur dans la réccupération des données");
+  }
 
+})
 
 // Démarrage du serveur après initialisation de la DB
 async function startServer() {
