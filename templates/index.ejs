@@ -19,9 +19,9 @@
     
         <div class="right">
             <div class="search">
-                <form action="#">
-                    <input type="text" name="barre de Recherche" placeholder="Adresse">
-                    <button type="submit"></button>
+                <form action="/search" method="post">
+                    <input type="text" id="searchBar" name="barre de Recherche" placeholder="Adresse">
+                    <button type="submit" onclick='searchBarButton()'></button>
                 </form>
             </div>
 
@@ -34,7 +34,7 @@
             
         </div>
     </nav>
-   
+        <p id="searchResult"> </p>
         <div class="info">
         <a class="report" href="/report">Reporter un incident</a>
         

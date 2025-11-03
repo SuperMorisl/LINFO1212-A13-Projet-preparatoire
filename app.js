@@ -176,6 +176,8 @@ app.post('/report', function (req, res) {
   }
 });
 
+// Fonction pour la barre de recherche de la page index
+
 
 // Démarrage du serveur après initialisation de la DB
 async function startServer() {
