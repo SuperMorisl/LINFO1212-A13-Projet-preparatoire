@@ -8,6 +8,8 @@ const { MongoClient } = require('mongodb');
 
 const checkuserInput = require('./tests/checkInput');
 const checkReportInput = require('./tests/checkReportInput');
+const { devNull } = require('os');
+const { error } = require('console');
 
 // Connexion à la database
 const client = new MongoClient("mongodb://localhost:27017");
@@ -87,7 +89,7 @@ app.get('/', async function (req, res) {
         }),
       username: req.session.username,
       incidents: incidents,   // Les incidents sont stockés dans incidents
-      searchedIncidents: []  // Pour stocker les incidents qui sont recherchés via la barre de recherche 
+      error : null
     })
   } catch (err) {
     res.status(500).send("Probléme avec la récup des données dans la db");
@@ -178,23 +180,61 @@ app.post('/report', function (req, res) {
 });
 
 // Fonction pour la barre de recherche de la page index
-app.post('/search', async function (req, res) {
-  const adress = req.body.adresse;
+app.post('/search', async function (req, res) { // Il faudra passer les tests pour vérifier que l'adresse entrée est bien valide 
+  const adress = req.body.searchBar.trim(); // On réccupère l'adresse entrée par l'utilisateur et on vérifie qu'il n'y ait pas d'espaces à la fin et/ou au début
+
   try {
-    const searchedIncidents = await incidentsCollection.find({ "Adresse": adress }).toArray();
-    const incidents = [];
-    res.render('index', {
-      today: new Date().toLocaleDateString('fr-FR',
-        {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        }),
-      username: req.session.username,
-      incidents: incidents,   // Tous les incidents dans la db
-      searchedIncidents: searchedIncidents  // Pour stocker les incidents qui sont recherchés via la barre de recherche 
-    });
+
+    if (adress && adress !== "") { // Si l'utilisateur entre une adresse
+      const incidents = await incidentsCollection.find({"Adresse": { $regex: adress, $options: "i" }}).toArray(); // De sorte que en majuscule ou minuscule l'adresse soit prise en compte 
+
+      if (incidents.length > 0) {
+        res.render('index', {
+        today: new Date().toLocaleDateString('fr-FR',
+          {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }),
+        username: req.session.username,
+        incidents: incidents,
+        error : null
+      });
+      }
+
+      else {
+        res.render('index', {
+        today: new Date().toLocaleDateString('fr-FR',
+          {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }),
+        username: req.session.username,
+        incidents: incidents,
+        error: "Aucun incident n'a été signalé à l'adresse fournie."
+      });
+      }
+    }
+
+    else {
+      const incidents = await getIncidents();
+      res.render('index', {
+        today: new Date().toLocaleDateString('fr-FR',
+          {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }),
+        username: req.session.username,
+        incidents: incidents,
+        error: null
+      });
+  }
+
   } catch (err) {
     console.error(err);
     res.status(500).send("Erreur dans la réccupération des données");

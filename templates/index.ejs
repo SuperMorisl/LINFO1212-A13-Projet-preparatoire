@@ -20,8 +20,8 @@
         <div class="right">
             <div class="search">
                 <form action="/search" method="post">
-                    <input type="text" id="searchBar" name="barre de Recherche" placeholder="Adresse">
-                    <button type="submit" onclick='displayMessageForSearchedIncidents()'></button>
+                    <input type="text" name="searchBar" placeholder="Adresse">
+                    <button type="submit"></button>
                 </form>
             </div>
 
@@ -34,10 +34,14 @@
             
         </div>
     </nav>
+
+        <% if (error) { %>   <!-- Si l'adresse entrée par l'utilisateur n'existe pas dans la base de données -->
+        <p class="error"><%= error %></p>
+        <% } %>
+        
         <p id="searchResult"> </p>
         <div class="info">
         <a class="report" href="/report">Reporter un incident</a>
-        
         <span class="brown">Jour actuel : <span> <%= today %></span></span>
         </div>
         <table class="signalements">
@@ -50,29 +54,16 @@
         </tr>
         </thead>
 
-        <% if (searchedIncidents && searchedIncidents.length > 0) { %>
-        <tbody>
-        <% searchedIncidents.forEach(function(searchedIncidents){ %>
-        <tr>
-          <td><%= searchedIncidents.Description %></td>
-          <td><%= searchedIncidents.Adresse %></td>
-          <td><%= searchedIncidents.Username %></td>
-          <td><%= searchedIncidents.Date %></td>
-        </tr>
-        <% }); %>
-        </tbody>
-        <% } else { %>
         <tbody>
         <% incidents.forEach(function(incident) { %>
         <tr>
-          <td><%= incident.Description %></td>
-          <td><%= incident.Adresse %></td>
-          <td><%= incident.Username %></td>
-          <td><%= incident.Date %></td>
+            <td><%= incident.Description %></td>
+            <td><%= incident.Adresse %></td>
+            <td><%= incident.Username %></td>
+            <td><%= incident.Date %></td>
         </tr>
         <% }); %>
         </tbody>
-        <% } %>
         </table>
 
 </body>
