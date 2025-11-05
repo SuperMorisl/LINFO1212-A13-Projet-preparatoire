@@ -165,7 +165,7 @@ app.get('/report', function (req, res) {
 });
 
 // Fonction qui regarde le résultat du formulaire (report)
-app.post('/report', function (req, res) {
+app.post('/report', async function (req, res) {
   if (!checkReportInput.isValidDescription(req.body.description)) {
     res.render('report', { username: req.session.username, error: "Description invalide" });
   }
@@ -175,8 +175,12 @@ app.post('/report', function (req, res) {
   else {
     req.session.description = req.body.description;
     req.session.adresse = req.body.adresse;
+    const date = `${String(new Date().getDate()).padStart(2,'0')}-${String(new Date().getMonth()+1).padStart(2,'0')}-${new Date().getFullYear()}`;
+    const newIncident = { "Description": req.session.description, "Adresse": req.session.adresse, "Username": req.session.username, "Date": date }; // Rajouter l'incident entré par l'utilisateur 
+    await incidentsCollection.insertOne(newIncident);
+    console.log("Un incident a bien été ajouté à la base de données !"); // pour tester 
+    }
     res.redirect('/');
-  }
 });
 
 // Fonction pour la barre de recherche de la page index

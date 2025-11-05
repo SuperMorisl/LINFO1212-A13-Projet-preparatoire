@@ -68,6 +68,7 @@ nav a:hover {
 .search form {
   display: flex;
   align-items: center;
+
 }
 
 .search input {
@@ -89,7 +90,6 @@ nav a:hover {
 }
 
 
-
 .search button {
     background-color: #ab9076;
     background-image: url("/search_icon.png");
@@ -107,6 +107,7 @@ nav a:hover {
 .search:hover {
     box-shadow: 2px 0 6px #ffffff5f;
 }
+
 
 h1.title {
     position: relative; /* Obligatoire pour avoir un élément ::before ou ::after */

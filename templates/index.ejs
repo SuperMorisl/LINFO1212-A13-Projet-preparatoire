@@ -20,8 +20,13 @@
         <div class="right">
             <div class="search">
                 <form action="/search" method="post">
-                    <input type="text" name="searchBar" placeholder="Adresse">
-                    <button type="submit"></button>
+                    <input list="incidents" type="text" name="searchBar" placeholder="Adresse" autocomplete="off">
+                    <datalist id="incidents">
+                    <% incidents.forEach(item => { %>
+                    <option value="<%= item.Adresse %>"></option>
+                    <% }) %>
+                    </datalist>
+                    <button type="submit"></button>   
                 </form>
             </div>
 
