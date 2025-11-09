@@ -2,65 +2,13 @@ var express = require('express');
 var session = require('express-session');
 var app = express();
 var bodyParser = require("body-parser");
-var fs = require("fs");
-const path = require('path');
-const { MongoClient } = require('mongodb');
 
 const checkuserInput = require('./tests/checkInput');
 const checkReportInput = require('./tests/checkReportInput');
-const { devNull } = require('os');
-const { error } = require('console');
 
-// Connexion à la database
-const client = new MongoClient("mongodb://localhost:27017");
+const { initDB, getIncidents } = require('./database/db');
 let incidentsCollection = null; // Collection incidents
 let loginCollection = null; // Collection login
-
-// Initialisation DB + seed si vide
-async function initDB() {
-  await client.connect();
-  const dbo = client.db("fixmycity");
-  incidentsCollection = dbo.collection("incidents");
-  loginCollection = dbo.collection("login");
-  console.log("Connexion à MongoDB (fixmycity) réussie !");
-
-  // Si la collection est vide, on la remplie automatiquement avec les données du fichier JSON
-  const countIncidents = await incidentsCollection.countDocuments();
-  if (countIncidents === 0) {
-    const dataRaw = fs.readFileSync(path.join('database', 'problems.json'), 'utf8');
-    const documents = dataRaw
-      .split("\n") // les sauts à la ligne marque un élément
-      .filter(line => line.trim() !== '') // ignore les lignes vides
-      .map(line => JSON.parse(line)); // chaque ligne JSON -> JS
-    await incidentsCollection.insertMany(documents); // Puis on insert les entrées dans la collection vide
-    console.log("La collection 'incidents' a bien été initialisée !");
-  }
-
-  // Même chose mais pour la collection login
-  const countUsers = await loginCollection.countDocuments();
-  if (countUsers === 0) {
-    const dataRaw = fs.readFileSync(path.join('database', 'login.json'), 'utf8');
-    const documents = dataRaw
-      .split("\n")
-      .filter(line => line.trim() !== '')
-      .map(line => JSON.parse(line));
-    await loginCollection.insertMany(documents);
-    console.log("La collection 'login' a bien été initialisée !");
-  }
-
-}
-
-// Récupération des incidents
-async function getIncidents() {
-  // on recupère toutes les données si la collection 'incidents' existe
-  if (!incidentsCollection) throw new Error("La collection incidents n'a pas été trouvée...");
-  return await incidentsCollection.find().toArray();
-}
-
-async function getUsers() { // Est utilisé dans la fonction testUsers() mais peut être supprimé
-  if (!loginCollection) throw new Error("La collection login n'a pas été trouvée...");
-  return await loginCollection.find().toArray();
-}
 
 // Configuration de l'app
 app.use(session({ // On crée une session (Cookies)
@@ -89,7 +37,7 @@ app.get('/', async function (req, res) {
         }),
       username: req.session.username,
       incidents: incidents,   // Les incidents sont stockés dans incidents
-      error : null
+      error: null
     })
   } catch (err) {
     res.status(500).send("Probléme avec la récup des données dans la db");
@@ -175,12 +123,12 @@ app.post('/report', async function (req, res) {
   else {
     req.session.description = req.body.description;
     req.session.adresse = req.body.adresse;
-    const date = `${String(new Date().getDate()).padStart(2,'0')}-${String(new Date().getMonth()+1).padStart(2,'0')}-${new Date().getFullYear()}`;
+    const date = `${String(new Date().getDate()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${new Date().getFullYear()}`;
     const newIncident = { "Description": req.session.description, "Adresse": req.session.adresse, "Username": req.session.username, "Date": date }; // Rajouter l'incident entré par l'utilisateur 
     await incidentsCollection.insertOne(newIncident);
     console.log("Un incident a bien été ajouté à la base de données !"); // pour tester 
-    }
-    res.redirect('/');
+  }
+  res.redirect('/');
 });
 
 // Fonction pour la barre de recherche de la page index
@@ -190,36 +138,36 @@ app.post('/search', async function (req, res) { // Il faudra passer les tests po
   try {
 
     if (adress && adress !== "") { // Si l'utilisateur entre une adresse
-      const incidents = await incidentsCollection.find({"Adresse": { $regex: adress, $options: "i" }}).toArray(); // De sorte que en majuscule ou minuscule l'adresse soit prise en compte 
+      const incidents = await incidentsCollection.find({ "Adresse": { $regex: adress, $options: "i" } }).toArray(); // De sorte que en majuscule ou minuscule l'adresse soit prise en compte 
 
       if (incidents.length > 0) {
         res.render('index', {
-        today: new Date().toLocaleDateString('fr-FR',
-          {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          }),
-        username: req.session.username,
-        incidents: incidents,
-        error : null
-      });
+          today: new Date().toLocaleDateString('fr-FR',
+            {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            }),
+          username: req.session.username,
+          incidents: incidents,
+          error: null
+        });
       }
 
       else {
         res.render('index', {
-        today: new Date().toLocaleDateString('fr-FR',
-          {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          }),
-        username: req.session.username,
-        incidents: incidents,
-        error: "Aucun incident n'a été signalé à l'adresse fournie."
-      });
+          today: new Date().toLocaleDateString('fr-FR',
+            {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            }),
+          username: req.session.username,
+          incidents: incidents,
+          error: "Aucun incident n'a été signalé à l'adresse fournie."
+        });
       }
     }
 
@@ -237,7 +185,7 @@ app.post('/search', async function (req, res) { // Il faudra passer les tests po
         incidents: incidents,
         error: null
       });
-  }
+    }
 
   } catch (err) {
     console.error(err);
@@ -249,7 +197,9 @@ app.post('/search', async function (req, res) { // Il faudra passer les tests po
 // Démarrage du serveur après initialisation de la DB
 async function startServer() {
   try {
-    await initDB();              // On attend que la DB soit prête
+    const db = await initDB();              // On attend que la DB soit prête
+    incidentsCollection = db.incidentsCollection;
+    loginCollection = db.loginCollection;
     app.listen(8080);            // Puis on démarre le serveur
     console.log("Url du serveur : http://localhost:8080");
   } catch (err) {
