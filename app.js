@@ -29,20 +29,25 @@ app.use(bodyParser.urlencoded({ extended: true })); // Permet de recupérer les 
 //                     FixMyCity/
 //                      D É B U T
 // ======================================================
-// Route de la page d'accueil
-app.get('/', async function (req, res) {
-  try {
-    const incidents = await getIncidents();
-    res.render('index', {
-      today: new Date().toLocaleDateString('fr-FR',
+function getToday() {
+  return new Date().toLocaleDateString('fr-FR',
         {
           weekday: 'long',
           year: 'numeric',
           month: 'long',
           day: 'numeric'
-        }),
+        });
+}
+
+// Route de la page d'accueil
+app.get('/', async function (req, res) {
+  try {
+    const allIncidents = await getIncidents();
+    res.render('index', {
+      today: getToday(),
       username: req.session.username,
-      incidents: incidents,   // Les incidents sont stockés dans incidents
+      allIncidents: allIncidents,
+      incidents: allIncidents,   // Les incidents sont stockés dans incidents
       error: null
     })
   } catch (err) {
@@ -58,17 +63,13 @@ app.post('/search', async function (req, res) { // Il faudra passer les tests po
 
     if (adress && adress !== "") { // Si l'utilisateur entre une adresse
       const incidents = await incidentsCollection.find({ "Adresse": { $regex: adress, $options: "i" } }).toArray(); // De sorte que en majuscule ou minuscule l'adresse soit prise en compte 
+      const allIncidents = await getIncidents();
 
       if (incidents.length > 0) {
         res.render('index', {
-          today: new Date().toLocaleDateString('fr-FR',
-            {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            }),
+          today: getToday(),
           username: req.session.username,
+          allIncidents: allIncidents,
           incidents: incidents,
           error: null
         });
@@ -76,14 +77,9 @@ app.post('/search', async function (req, res) { // Il faudra passer les tests po
 
       else {
         res.render('index', {
-          today: new Date().toLocaleDateString('fr-FR',
-            {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            }),
+          today: getToday(),
           username: req.session.username,
+          allIncidents: allIncidents,
           incidents: incidents,
           error: "Aucun incident n'a été signalé à l'adresse fournie."
         });
@@ -91,19 +87,7 @@ app.post('/search', async function (req, res) { // Il faudra passer les tests po
     }
 
     else {
-      const incidents = await getIncidents();
-      res.render('index', {
-        today: new Date().toLocaleDateString('fr-FR',
-          {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          }),
-        username: req.session.username,
-        incidents: incidents,
-        error: null
-      });
+      res.redirect("/");
     }
 
   } catch (err) {
@@ -111,7 +95,7 @@ app.post('/search', async function (req, res) { // Il faudra passer les tests po
     res.status(500).send("Erreur dans la réccupération des données");
   }
 
-})
+});
 // ======================================================
 //                     FixMyCity/
 //                        F I N

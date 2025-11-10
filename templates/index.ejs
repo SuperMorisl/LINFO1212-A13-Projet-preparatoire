@@ -20,9 +20,9 @@
         <div class="right">
             <div class="search">
                 <form action="/search" method="post">
-                    <input list="incidents" type="text" name="searchBar" placeholder="Adresse" autocomplete="off">
-                    <datalist id="incidents">
-                    <% incidents.forEach(item => { %>
+                    <input list="allIncidents" type="text" name="searchBar" placeholder="Adresse" autocomplete="off">
+                    <datalist id="allIncidents">
+                    <% allIncidents.forEach(item => { %>
                     <option value="<%= item.Adresse %>"></option>
                     <% }) %>
                     </datalist>
@@ -39,16 +39,17 @@
             
         </div>
     </nav>
-
-        <% if (error) { %>   <!-- Si l'adresse entrée par l'utilisateur n'existe pas dans la base de données -->
-        <p class="error"><%= error %></p>
-        <% } %>
         
         <p id="searchResult"> </p>
         <div class="info">
         <a class="report" href="/report">Reporter un incident</a>
         <span class="brown">Jour actuel : <span> <%= today %></span></span>
         </div>
+
+        <% if (error) { %>   <!-- Si l'adresse entrée par l'utilisateur n'existe pas dans la base de données -->
+        <p class="error"><%= error %></p>
+        <% } else { %>
+
         <table class="signalements">
         <thead>
         <tr>
@@ -70,6 +71,7 @@
         <% }); %>
         </tbody>
         </table>
+        <% } %>
 
 </body>
 
