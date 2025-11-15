@@ -3,9 +3,10 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Fix_mycity</title>
+    <title>FixMyCity | Se connecter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="app.js" defer></script>
+    <script src="/script.js" defer></script>
+    <link rel="icon" href="/logo.jpg">
     <link rel="stylesheet" href="/style.css">
 </head>
 
@@ -15,62 +16,106 @@
             <img src="/logo.jpg">
             <a href="/">FixMyCity</a>
         </div>
-    
-        <div class="right">
-            <div class="search">
-                <form action="#" >
-                    <input type="text" name="barre de Recherche" placeholder="Adresse">
-                    <button type="submit"></button>
-                </form>
-            </div>
-            <a href="/login">Se connecter</a>
-        </div>
     </nav>
+
     <div class="login_page">
-        <% if (error) { %>
-            <p style="color:red;"><%= error %></p>
-        <% } %>
 
         <h1 class="title">Compte existant</h1>
 
         <form action="/login" method="post">
-        <div class="formulaire">
-            <p>
-                <label>Nom d'utilisateur : </label>
-                <input type="text" id="utilisateur_connection" name="username" placeholder="Entrez votre nom d'utilisateur" required>
-            </p>
-            <p>
-                <label>Mot de passe : </label>
-                <input type="password" id="mdp_connection" name="password" required>
-            </p>
-            <p>
-                <button type="submit">S'identifier</button>
-            </p>
-        </div>
+            <div class="formulaire">
+                <p>
+                    <label>Nom d'utilisateur : </label>
+                    <input type="text" id="utilisateur_connection" name="username"
+                        placeholder="Entrez votre nom d'utilisateur" required>
+                </p>
+                <p>
+                    <label>Mot de passe : </label>
+                    <input type="password" id="mdp_connection" name="password" required>
+                </p>
+
+                <% if (error && hasAccount) { %>
+                    <p class="error"><%= error %></p>
+                <% } %>
+                <p>
+                    <button type="submit">S'identifier</button>
+                </p>
+            </div>
         </form>
         <h1 class="title">Nouveau compte</h1>
-        <form action="##" method="post">
-        <div class="formulaire">
-            <p>
-                <label>Nom d'utilisateur : </label>
-                <input type="text" id="utilisateur_enregistrement" name="utilisateur" placeholder="Créez un nom d'utilisateur" required>
-            </p>
-            <p>
-                <label>Mot de passe : </label>
-                <input type="password" id="mdp_enregistrement" name="nouveau_mot_de_passe" required>
-            </p>
-            <p>
-                <label>Nom complet : </label>
-                <input type="text" id="nom_entier" name="nom" required>
-            </p>
-            <p>
-                <label>Adresse e-mail : </label>
-                <input type="email" id="email" name="email" required>
-            </p>
-            <p>
-                <button type="submit">S'enregistrer</button>
-            </p>
+        
+        <!-- Bouton qui ouvre la pop-up -->
+        <p>
+            <button class="popUp" onclick="openPopup()">Règles de syntax</button>
+        </p>
+        <!-- Pop-up -->
+        <div class="popup" id="popUp">
+            <h1 class="title">Nom d'utilisateur</h1>
+            <ul>
+                <li>Doit contenir entre <strong>3</strong> et <strong>20 caractères</strong></li>
+                <li>Ne doit pas contenir de caractères spéciaux</li>
+                <li>Peut contenir des chiffres, mais <strong>pas au milieu du nom</strong><br>
+                    (ex. ✅ 123Paul ou Paul123 — ❌ Pa12ul)
+                </li>
+            </ul>
+        
+            <h1 class="title">Mot de passe</h1>
+            <ul>
+                <li>Doit contenir entre <strong>12</strong> et <strong>30 caractères</strong></li>
+                <li>Doit inclure au moins :
+                    <ul>
+                        <li>Une <strong>lettre majuscule</strong></li>
+                        <li>Une <strong>lettre minuscule</strong></li>
+                        <li>Un <strong>chiffre</strong></li>
+                    </ul>
+                </li>
+            </ul>
+        
+            <h1 class="title">Adresse e-mail</h1>
+            <ul>
+                <li>Doit commencer par une lettre ou un chiffre</li>
+                <li>Peut contenir des lettres, chiffres _ - ou .</li>
+                <li>Ne doit pas contenir plusieurs points consécutifs</li>
+                <li>Doit se terminer par un domaine valide :
+                    <ul>
+                        <li>@gmail.com</li>
+                        <li>@outlook.com</li>
+                        <li>@hotmail.com</li>
+                    </ul>
+                </li>
+            </ul>
+        
+            <button class="close-btn" onclick="closePopup()">X</button>
         </div>
+        <!-- Fin de la Pop-up-->
+
+        <form action="/register" method="post">
+            <div class="formulaire">
+                <p>
+                    <label>Nom d'utilisateur : </label>
+                    <input type="text" id="utilisateur_enregistrement" name="username"
+                        placeholder="Créez un nom d'utilisateur" required>
+                </p>
+                <p>
+                    <label>Mot de passe : </label>
+                    <input type="password" id="mdp_enregistrement" name="password" required>
+                </p>
+                <p>
+                    <label>Nom complet : </label>
+                    <input type="text" id="nom_entier" name="name" required>
+                </p>
+                <p>
+                    <label>Adresse e-mail : </label>
+                    <input type="email" id="email" name="email" required>
+                </p>
+
+                <% if (error && !hasAccount) { %>
+                    <p class="error"><%= error %></p>
+                <% } %>
+                <p>
+                    <button type="submit">S'enregistrer</button>
+                </p>
+            </div>
         </form>
     </div>
 </body>

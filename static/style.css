@@ -44,7 +44,10 @@ nav .right {
     gap: 2rem;
 }
 
-nav .right a {
+nav .right a,
+a.report,
+span.brown,
+p {
     font-size: clamp(0.8rem, 3.2vw, 1.2rem); /* clamp(taille_min, taille préférée, taille_max) */
     color: rgba(43, 37, 22, 0.851);
     font-weight: 600;
@@ -65,6 +68,7 @@ nav a:hover {
 .search form {
   display: flex;
   align-items: center;
+
 }
 
 .search input {
@@ -85,6 +89,7 @@ nav a:hover {
     outline: none; /* supprime le contour bleu de base */
 }
 
+
 .search button {
     background-color: #ab9076;
     background-image: url("/search_icon.png");
@@ -103,25 +108,6 @@ nav a:hover {
     box-shadow: 2px 0 6px #ffffff5f;
 }
 
-
-.add{
-    display: block;
-    margin-left: 5px;
-    padding: 1rem 2rem;
-    border: none;
-}
-
-
-.signalements{
-    margin: 2rem auto;
-    border-spacing: 5rem 0.5rem;
-    
-}
-
-.signalements th, .signalements td{
-    padding: 1rem 1rem;
-    border: 1px solid black;
-}
 
 h1.title {
     position: relative; /* Obligatoire pour avoir un élément ::before ou ::after */
@@ -143,7 +129,6 @@ h1.title::before { /* Effet souligné */
     height: 0.2rem;
     background-color: #A67C52;
 }
-
 
 
 div.formulaire {
@@ -174,11 +159,11 @@ div.formulaire textarea:focus { /* s'active quand on remplie le formulaire */
     border: 3px solid #D8BFAA; 
 }
 
-div.formulaire button {
+div.formulaire button,
+button.popUp {
     display: flex; /* necessaire pour centrer verticalement et horizontalement */
     justify-content: center; /* centre horizontalement */
     align-items: center;     /* centre verticalement */
-    
     margin-top: 2%;
     padding: 0.5rem 1rem;    /* padding top/bottom  left/right */
     width: fit-content;
@@ -195,22 +180,112 @@ div.formulaire button {
     transition: background-color 0.4s ease; /* transition pour hover */
 }
 
-div.formulaire button:hover { /* Comportement quand on est sur le button */
+div.formulaire button:hover,
+button.popUp:hover { /* Comportement quand on est sur le button */
     background-color: #8C6239;
 }
 
 
 div.login_page {
-    width : fit-content; 
-    margin: 0 auto; 
-    padding: 0.5rem 1rem; 
-    margin-top: 7%;
-    border: 4px solid #A67C52; 
-    border-radius: 4%;
+    width: 56%; 
+    max-width: 400px; /* évite que le cadre devienne trop grand sur les grands écrans */
+    margin: 5% auto 4%; /* haut, gauche/droite, bas */
+    padding: 2rem; /* espace intérieur plus confortable */
+    border: 3.5px solid #A67C52;
+    border-radius: 15px;
+    display: flex; 
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+    font-size: 1.1rem; /* pour rendre le texte plus lisible */
 }
+
+div.popup {
+  display: none; /* Cachée par défaut mais modifiable dans le js static */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centre la popUp en + de top et left */
+  overflow-y: auto; /* permet de scroller */
+
+  width: 80%;
+  max-height: 80vh;
+  padding: 2rem;
+  z-index: 100; /* Juste pour dire qu'il s'affiche à l'avant plan*/
+
+  background: white;
+  border: 3px solid rgba(166, 124, 82, 0.55);
+  border-radius: 15px;
+}
+
+button.popUp {
+    margin-left: 2%;
+}
+
+button.close-btn {
+  background-color: #ff4557;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button.close-btn:hover {
+  background-color: #dc3545;
+}
+
+
+p.error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    font-size: clamp(0.7rem, 1vw, 1.4rem);
+}
+
+
+
+span.brown span { /* pour entourer que la partie de la date */
+    border: 3px solid #D8BFAA; 
+    border-radius: 7px;
+    padding: 0.1em 0.3em; 
+}
+
+div.info {
+    display: flex;
+    justify-content: space-between;
+    padding: 2%;
+    padding-bottom: 1%;
+}
+
+/* le tableau avec les signalements */
+table.signalements{
+    margin: 2rem auto;
+    text-size-adjust: 100%;
+    margin-top: 4%;
+    border: 2px solid rgba(166, 124, 82, 0.55); 
+    border-spacing: 5rem 0.5rem;
+    border-collapse: collapse; /* pour que la bordure du tableau html se fonde à celle qu'on créé avec border */
+    width: 80%;
+}
+
+table.signalements th, table.signalements td {
+    padding: 1rem 1rem;
+    border: 2px solid rgba(166, 124, 82, 0.55); 
+    padding: 8px;
+    text-align: center;
+}
+
+table.signalements th{
+    background-color: #D8BFAA;
+}
+
+table.signalements tr:hover{ /* hover sert à faire en sorte que lorsqu'on clique sur une case du tableau celle-ci change de couleur */
+    background-color: #cdc0b7;
+    transition: 0.5s; /* le temps qu'il faut pour le changement de couleur */
+}
+
 
 
 /* Pour changer certains attributs pour que ça soit responsive sur mobile */
@@ -241,6 +316,17 @@ div.login_page {
         height: 0.15rem;
     }
 
+    button.popUp,
+    p.error {
+        margin: auto;
+        margin-top: 1.5rem;
+    }
+
+    div.info {
+        padding-top: 5%;
+        padding-bottom: 10%;
+    }
+
     div.formulaire {
         display: flex;
         flex-direction: column;
@@ -256,9 +342,30 @@ div.login_page {
 
     div.login_page {
         width : 80%; 
-        margin-top: 20%;
+        max-width: 600px;   /* empêche la boîte de devenir trop large */
+        min-width: 250px; 
+        margin-top: 4%;
+        margin-bottom: 4%;
+        padding: 1rem;
         font-size: 0.9rem;
-        box-sizing: border-box; /* Pour que le padding ne déborde pas du div */
+        box-sizing: border-box;   /* sert pour la largeur ppour pas qu'elle soit trop grande */    
     }
 
+
+    table.signalements {
+        width: 100%;            
+        min-width: 300px;
+        margin: 0 auto;
+        table-layout: auto;      /* les colonnes s’adaptent au contenu */
+        border-collapse: collapse;
+    }
+
+
+    table.signalements th, table.signalements td {
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;        /* rendre le texte lisible sur petit écran */
+        white-space: normal;
+        overflow-wrap: break-word; /* coupe les mots s'ils sont trop long pour la ligne */
+        word-break: break-word;   
+    }
 }
