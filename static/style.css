@@ -240,6 +240,7 @@ button.close-btn:hover {
 p.error {
     color: red;
     font-weight: bold;
+    text-align: center;
     font-size: clamp(0.7rem, 1vw, 1.4rem);
 }
 

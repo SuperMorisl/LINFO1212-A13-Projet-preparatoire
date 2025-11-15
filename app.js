@@ -7,7 +7,7 @@ const checkuserInput = require('./tests/checkInput');
 const checkReportInput = require('./tests/checkReportInput');
 
 const { initDB, getIncidents } = require('./database/db');
-// Les collections sont récupérés dans la fonction startServer() ligne 199
+// Les collections sont récupérés dans la fonction startServer() toute à la fin du fichier
 let incidentsCollection = null; // Collection incidents
 let loginCollection = null; // Collection login
 
@@ -30,21 +30,33 @@ app.use(bodyParser.urlencoded({ extended: true })); // Permet de recupérer les 
 //                      D É B U T
 // ======================================================
 function getToday() {
-  return new Date().toLocaleDateString('fr-FR',
-        {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
+  const date = new Date();
+
+  const full = date.toLocaleDateString("fr-FR", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+
+  const compact = date.toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    })
+    .split("/")
+    .join("-");
+
+  return { full, compact };
 }
+
 
 // Route de la page d'accueil
 app.get('/', async function (req, res) {
   try {
     const allIncidents = await getIncidents();
     res.render('index', {
-      today: getToday(),
+      today: getToday().full,
       username: req.session.username,
       allIncidents: allIncidents,
       incidents: allIncidents,   // Les incidents sont stockés dans incidents
@@ -67,7 +79,7 @@ app.post('/search', async function (req, res) { // Il faudra passer les tests po
 
       if (incidents.length > 0) {
         res.render('index', {
-          today: getToday(),
+          today: getToday().full,
           username: req.session.username,
           allIncidents: allIncidents,
           incidents: incidents,
@@ -77,7 +89,7 @@ app.post('/search', async function (req, res) { // Il faudra passer les tests po
 
       else {
         res.render('index', {
-          today: getToday(),
+          today: getToday().full,
           username: req.session.username,
           allIncidents: allIncidents,
           incidents: incidents,
@@ -181,7 +193,7 @@ app.get('/report', function (req, res) {
     res.render('report', { username: req.session.username, error: null });
   }
   else {
-    res.render('login', { error: "Pour reporter un incident il faut être connecté", hasAccount: true }) // hasAccount ici est arbitraire
+    res.redirect('/login')
   }
 });
 
@@ -196,12 +208,12 @@ app.post('/report', async function (req, res) {
   else {
     req.session.description = req.body.description;
     req.session.adresse = req.body.adresse;
-    const date = `${String(new Date().getDate()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${new Date().getFullYear()}`;
+    const date = getToday().compact;
     const newIncident = { "Description": req.session.description, "Adresse": req.session.adresse, "Username": req.session.username, "Date": date }; // Rajouter l'incident entré par l'utilisateur 
     await incidentsCollection.insertOne(newIncident);
     console.log("Un incident a bien été ajouté à la base de données !"); // pour tester 
+    res.redirect('/');
   }
-  res.redirect('/');
 });
 // ======================================================
 //                  FixMyCity/report
@@ -211,18 +223,21 @@ app.post('/report', async function (req, res) {
 
 
 // Démarrage du serveur après initialisation de la DB
-async function startServer() {
+async function startServer(test) {
   try {
     const db = await initDB();              // On attend que la DB soit prête
     incidentsCollection = db.incidentsCollection;
     loginCollection = db.loginCollection;
-    app.listen(8080);            // Puis on démarre le serveur
-    console.log("Url du serveur : http://localhost:8080");
+    if (!test) { // Cela evite d'interferer avec les SuperTests
+      app.listen(8080);            // Puis on démarre le serveur
+      console.log("Url du serveur : http://localhost:8080");
+    }
+    return incidentsCollection;
   } catch (err) {
     console.error("Erreur lors de l'initialisation de MongoDB... :", err);
   }
 }
 
-startServer();
+startServer(false); // test = false
 
-module.exports = app; // Pour les SuperTests
+module.exports = { app, startServer }; // Pour les SuperTests

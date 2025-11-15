@@ -1,7 +1,12 @@
 const request = require("supertest")
-const app = require("../app.js")
+const { app, startServer } = require("../app.js")
+
 
 describe("Checking the routes", () => {
+
+    beforeAll(async () => {
+    incidentsCollection = await startServer(true); // Initialise la DB SANS lancer le serveur, voir la fonction startServer dans app.js (test = true)
+    });
 
     test("GET / doit rendre la page d'accueil", async () => {
         const httpRequest = await request(app).get("/");
@@ -17,7 +22,7 @@ describe("Checking the routes", () => {
         const httpRequest = await request(app)
             .post("/login")
             .type("form") // Pour simuler un envoie de données par les form du HTML
-            .send({ username: "moimeme", password: "admin123456789" });
+            .send({ username: "moimeme", password: "motdepasse123456" });
 
         expect(httpRequest.statusCode).toBe(302); // redirection car le mot de passe est valide
         expect(httpRequest.headers.location).toBe("/"); // redirigé vers la page d'acceuil
@@ -36,7 +41,7 @@ describe("Checking the routes", () => {
     test("GET /report sans session redirige vers la page de connexion", async () => {
         const httpRequest = await request(app).get("/report");
         expect(httpRequest.statusCode).toBe(302); // Redirection vers login car on est pas connecté
-        expect(httpRequest.headers.location).toBe("login");
+        expect(httpRequest.headers.location).toBe("/login");
     });
 
     test("GET et POST /report en étant connecté sans erreur", async () => {
@@ -51,7 +56,7 @@ describe("Checking the routes", () => {
         await agent
             .post("/login")
             .type("form")
-            .send({ username: informations[0], password: "admin123456789" });
+            .send({ username: informations[0], password: "motdepasse123456" });
 
         const httpRequest = await agent.get("/report");
         expect(httpRequest.statusCode).toBe(200);
@@ -69,5 +74,10 @@ describe("Checking the routes", () => {
         for (const info of informations) {
             expect(httpRequest3.text).toContain(info);
         }
+    });
+
+    // Nettoyage après tous les tests
+    afterAll(async () => {
+        await incidentsCollection.deleteMany({ Username: "moimeme" }); // supprime tous les reports de test
     });
 });
