@@ -52,7 +52,7 @@ Installez les dépendances (assurez-vous d’avoir **Node.js** et **MongoDB** in
 
 ---
 #### 🔹 Lancer l'application web
-`sudo systemctl start mongod`
+`sudo systemctl start mongod` <br>
 `node app.js`
 
 ---
@@ -73,3 +73,4 @@ Installez les dépendances (assurez-vous d’avoir **Node.js** et **MongoDB** in
 
 ## 📅 Échéances
 - 📌 **Fin de la phase préparatoire 1** pour le **30/09/2025**
+- 📌 **Fin de la phase préparatoire (fin)** pour le **25/11/2025**
